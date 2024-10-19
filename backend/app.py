@@ -100,7 +100,7 @@ def add_user():
 @app.route('/employer', methods=['POST'])
 def add_employer():
     data=request.get_json()
-    email=data('email')
+    email=data['email']
 
 
 
@@ -115,7 +115,7 @@ def add_employer():
 
     try:
         insert_query='INSERT INTO comments (email) VALUES (%s)'
-        cursor.execute(insert_query,(email))
+        cursor.execute(insert_query,(email,))
         conn.commit()
 
         return jsonify({'message':'post added sucessfully!'}),201
@@ -151,7 +151,7 @@ def add_post():
 
 
     try:
-        insert_query='INSERT INTO comments (title,content,username) VALUES (%s,%s,%s)'
+        insert_query='INSERT INTO Post (title,content,username) VALUES (%s,%s,%s)'
         cursor.execute(insert_query,(title,content,username))
         conn.commit()
 
@@ -169,13 +169,13 @@ def add_post():
 @app.route('/comments', methods=['POST'])
 def add_comment():
     data=request.get_json()
-    title=data('title')
-    post_id=data('post_id')
-    username=data('username')
+    comment=data['comment']
+    post_id=data['post_id']
+    username=data['username']
 
 
 
-    if not title or not post_id or not username :
+    if not comment or not post_id or not username :
         return(jsonify({'message':'Need to provide the following information'}),400)
     conn,cursor=get_conn_database()
 
@@ -185,8 +185,8 @@ def add_comment():
 
 
     try:
-        insert_query='INSERT INTO comments (title,post_id,username) VALUES (%s,%s,%s)'
-        cursor.execute(insert_query,(title,post_id,username))
+        insert_query='INSERT INTO comments (comment,post_id,username) VALUES (%s,%s,%s)'
+        cursor.execute(insert_query,(comment,post_id,username))
         conn.commit()
 
         return jsonify({'message':'comment added sucessfully!'}),201
