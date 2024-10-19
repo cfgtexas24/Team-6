@@ -10,3 +10,10 @@ Our project provides many solutions to assist in the organization's needs:
 - Dedicated community forum
 - Private mentor-mentee messaging
 - User friendly interface
+
+To get started on your own machine:
+
+- Clone the repository
+- CD to the frontend folder and run `npm i` then `npm run dev`
+- CD to the backend folder and run `pip install requirements.txt` then `python3 app.py` simultaneoulsy in another terminal
+- Username: name PW: pass900
