@@ -7,18 +7,6 @@ app.config.from_object(Config)
 
 
 
-conn = mysql.connector.connect(
-            username=app.config['MYSQL_USER'],
-            password=app.config['MYSQL_PASSWORD'],
-            host=app.config['MYSQL_HOST'],
-            database=app.config['MYSQL_DB']
-        )
-
-cursor = conn.cursor()
-
-
-app.config.from_object(Config)
-
 
 conn = mysql.connector.connect(
             username=app.config['MYSQL_USER'],
@@ -28,6 +16,8 @@ conn = mysql.connector.connect(
         )
 
 cursor = conn.cursor()
+
+
 
 
 print("database open successfully!!")
@@ -81,7 +71,7 @@ print("table comments created successfully")
 
 
 print("table created successfully")
-cusor.close()
+cursor.close()
 
 
 
