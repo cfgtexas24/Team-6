@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardContent,
+  Divider,
   IconButton,
   LinearProgress,
   List,
@@ -25,12 +26,18 @@ type Post = {
   id: string;
   username: string;
   title: string;
+  replies?: Post[];
 };
 
 async function getPosts() {
   const dummyData: Record<Category, Post[]> = {
     [Category.SupportGroup]: [
-      { username: "Test user", title: "group support yayay", id: "4" },
+      {
+        username: "Test user",
+        title: "group support yayay",
+        id: "4",
+        replies: [{ username: "Test replier", title: "Hello", id: "whatever" }],
+      },
     ],
     [Category.Course]: [{ username: "Test user", title: "course", id: "1" }],
     [Category.Alumni]: [{ username: "Test user", title: "alumni", id: "2" }],
@@ -65,7 +72,6 @@ const Forum: FC = () => {
 
   const params = useParams<{ category: Category; post: string }>();
   const category = params.category ?? Category.SupportGroup;
-  const post = params.post;
 
   const navigate = useNavigate();
 
@@ -73,19 +79,24 @@ const Forum: FC = () => {
     return <LinearProgress />;
   }
 
-  const body = post ? (
+  const openedPost = posts[category].find((p) => p.id === params.post);
+
+  const body = openedPost ? (
+    // A single thread is open
     <>
       <Link to={`/community-forums/${category}`}>
         <IconButton>
           <ArrowBackIcon />
         </IconButton>
       </Link>
-      <Post
-        category={category}
-        post={posts[category].find((p) => p.id === post)!}
-      />
+      <Post category={category} post={openedPost} />
+      <Divider />
+      {(openedPost.replies ?? []).map((p) => (
+        <Post post={p} category={category} />
+      ))}
     </>
   ) : (
+    // List all of the threads
     posts[category].map((post) => <Post post={post} category={category} />)
   );
 
