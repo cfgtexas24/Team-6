@@ -6,10 +6,8 @@ const EmployerStudentSearchPage: FC = () => {
   const [jobType, setJobType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
   const [workPreference, setWorkPreference] = useState<string[]>([]);
-  const [skillsCategory, setSkillsCategory] = useState<
-    "all" | "technical" | "languages" | "certifications" | "soft skills"
-  >("all");
   const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
+  const [technicalSkills, setTechnicalSkills] = useState<string[]>([]); // Store specific technical skills
   const [selectedJobSeeker, setSelectedJobSeeker] = useState<any | null>(null);
   const [dropdownStates, setDropdownStates] = useState<{
     [key: string]: boolean;
@@ -18,11 +16,7 @@ const EmployerStudentSearchPage: FC = () => {
     jobType: false,
     location: false,
     workPreference: false,
-    technicalSkills: false,
-    codingLanguages: false,
-    languages: false,
-    certifications: false,
-    softSkills: false,
+    technicalSkills: false, // Dropdown state for technical skills
   });
 
   const jobSeekers = [
@@ -76,7 +70,7 @@ const EmployerStudentSearchPage: FC = () => {
     let skillsMatch = true;
     if (selectedSkill.length > 0) {
       skillsMatch = selectedSkill.every((skill) => {
-        const technicalSkills = [
+        const technicalSkillsArray = [
           "Java",
           "Python",
           "JavaScript",
@@ -86,9 +80,15 @@ const EmployerStudentSearchPage: FC = () => {
           "Swift",
           "PHP",
         ];
-        return technicalSkills.some((techSkill) =>
-          jobSeeker.skills.includes(techSkill),
-        );
+
+        // If 'technical' is selected, filter based on the technical skills selected
+        if (skill === "technical") {
+          return (
+            technicalSkills.length === 0 ||
+            technicalSkills.some((tech) => jobSeeker.skills.includes(tech))
+          );
+        }
+        return jobSeeker.skills.includes(skill);
       });
     }
 
@@ -134,6 +134,7 @@ const EmployerStudentSearchPage: FC = () => {
     }));
   };
 
+  // FilterDropdown Component
   const FilterDropdown: FC<{
     title: string;
     options: string[];
@@ -166,6 +167,54 @@ const EmployerStudentSearchPage: FC = () => {
                   />
                   {option.charAt(0).toUpperCase() + option.slice(1)}
                 </label>
+
+                {/* Show technical skills dropdown when 'technical' is selected */}
+                {option === "technical" && selected.includes("technical") && (
+                  <div className="ml-4 mt-2">
+                    <button
+                      onClick={() => toggleDropdown("technicalSkills")}
+                      className="text-blue-500 text-sm"
+                    >
+                      {dropdownStates.technicalSkills
+                        ? "Hide Technical Skills"
+                        : "Show Technical Skills"}
+                    </button>
+                    {dropdownStates.technicalSkills && (
+                      <div className="ml-4 mt-2">
+                        {[
+                          "Python",
+                          "Java",
+                          "JavaScript",
+                          "C++",
+                          "C#",
+                          "Ruby",
+                          "Swift",
+                          "PHP",
+                        ].map((techSkill) => (
+                          <div key={techSkill} className="mb-2">
+                            <label className="block">
+                              <input
+                                type="checkbox"
+                                value={techSkill}
+                                onChange={() =>
+                                  toggleSelection(
+                                    techSkill,
+                                    technicalSkills,
+                                    setTechnicalSkills,
+                                  )
+                                }
+                                checked={technicalSkills.includes(techSkill)}
+                                className="mr-2"
+                              />
+                              {techSkill.charAt(0).toUpperCase() +
+                                techSkill.slice(1)}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
             <div className="mt-4 flex justify-between">
