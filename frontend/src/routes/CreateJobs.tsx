@@ -22,7 +22,7 @@ const CreateJobs: FC = () => {
   const [newJob, setNewJob] = useState<Omit<Job, 'id' | 'logo'>>({
     title: '',
     company: '',
-    type: 'intern',
+    type: 'intern', // Default job type set to 'intern'
     description: '',
     hourlyPay: 0,
     applicationLink: '', // Initialize application link
@@ -52,7 +52,7 @@ const CreateJobs: FC = () => {
     if (selectedJob?.id === id) setSelectedJob(null);
   };
 
-  // ensure valid URL (if the user doesn't include 'http' or 'https', we add it)
+  // Ensure valid URL (if the user doesn't include 'http' or 'https', we add it)
   const validateUrl = (url: string) => {
     if (!/^https?:\/\//i.test(url)) {
       return `https://${url}`;
@@ -66,18 +66,18 @@ const CreateJobs: FC = () => {
 
       {/* Search / Filter */}
       <div className="flex mb-6">
-        <div className="relative w-1/3 mr-4">
+        <div className="relative w-3/4 mr-4">
           <input
             type="text"
             placeholder="Search for jobs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full border border-gray-300 rounded-full p-3 pl-5 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#475299] transition-all"
+            className="w-1/2 space-x-4 border border-gray-300 rounded-full p-3 pl-5 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#475299] transition-all"
           />
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex space-x-2 pl-96">
+        <div className="flex space-x-2">
           {['all', 'intern', 'full-time', 'part-time'].map((type) => (
             <button
               key={type}
@@ -127,8 +127,8 @@ const CreateJobs: FC = () => {
                     <p className="text-gray-600">{job.company}</p>
                     <p className="text-sm text-gray-500">{job.type}</p>
                   </div>
-                  <button onClick={() => handleDeleteJob(job.id)} className="text-red-600 ml-auto bg-white border-0 rounded-full w-6 h-6 pr-8">
-                    <CancelIcon></CancelIcon>
+                  <button onClick={() => handleDeleteJob(job.id)} className="py-2 px-3 text-sm font-medium text-center border-0 text-white font-bold bg-red-600 rounded-full hover:bg-red-700">
+                    Delete
                   </button>
                 </div>
               </div>
@@ -200,27 +200,39 @@ const CreateJobs: FC = () => {
               />
             </div>
             <div className="mb-4">
+              <label className="block mb-1">Job Type:</label>
+              <select
+                value={newJob.type}
+                onChange={(e) => setNewJob({ ...newJob, type: e.target.value as 'intern' | 'full-time' | 'part-time' })}
+                className="border border-gray-300 rounded p-2 w-full"
+              >
+                <option value="intern">Intern</option>
+                <option value="full-time">Full-Time</option>
+                <option value="part-time">Part-Time</option>
+              </select>
+            </div>
+            <div className="mb-4">
               <label className="block mb-1">Hourly Pay:</label>
               <input
                 type="number"
                 value={newJob.hourlyPay}
-                onChange={(e) => setNewJob({ ...newJob, hourlyPay: parseFloat(e.target.value) })}
+                onChange={(e) => setNewJob({ ...newJob, hourlyPay: Number(e.target.value) })}
                 className="border border-gray-300 rounded p-2 w-full"
               />
             </div>
             <div className="mb-4">
               <label className="block mb-1">Application Link:</label>
               <input
-                type="url"
+                type="text"
                 value={newJob.applicationLink}
                 onChange={(e) => setNewJob({ ...newJob, applicationLink: e.target.value })}
                 className="border border-gray-300 rounded p-2 w-full"
               />
             </div>
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-between">
               <button
                 onClick={() => setIsCreating(false)}
-                className="mr-2 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
                 Cancel
               </button>
