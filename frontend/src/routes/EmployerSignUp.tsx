@@ -188,7 +188,18 @@ const EmployerSignupPage: React.FC = () => {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
             />
-            <Button onClick={handleNext} variant="contained" sx={{ mt: 2 }}>
+            <Button
+              onClick={handleNext}
+              variant="contained"
+              sx={{
+                mt: 2,
+                backgroundColor: "#FEC10E",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#E0A90C",
+                },
+              }}
+            >
               Next
             </Button>
           </>
@@ -217,11 +228,31 @@ const EmployerSignupPage: React.FC = () => {
             <Button
               onClick={handleBack}
               variant="outlined"
-              sx={{ mt: 2, mr: 2 }}
+              sx={{
+                mt: 2,
+                mr: 2,
+                borderColor: "#FEC10E",
+                color: "#FEC10E",
+                "&:hover": {
+                  borderColor: "#E0A90C",
+                  color: "#E0A90C",
+                },
+              }}
             >
               Back
             </Button>
-            <Button onClick={handleNext} variant="contained" sx={{ mt: 2 }}>
+            <Button
+              onClick={handleNext}
+              variant="contained"
+              sx={{
+                mt: 2,
+                backgroundColor: "#FEC10E",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#E0A90C",
+                },
+              }}
+            >
               Next
             </Button>
           </>
@@ -243,11 +274,31 @@ const EmployerSignupPage: React.FC = () => {
             <Button
               onClick={handleBack}
               variant="outlined"
-              sx={{ mt: 2, mr: 2 }}
+              sx={{
+                mt: 2,
+                mr: 2,
+                borderColor: "#FEC10E",
+                color: "#FEC10E",
+                "&:hover": {
+                  borderColor: "#E0A90C",
+                  color: "#E0A90C",
+                },
+              }}
             >
               Back
             </Button>
-            <Button onClick={handleNext} variant="contained" sx={{ mt: 2 }}>
+            <Button
+              onClick={handleNext}
+              variant="contained"
+              sx={{
+                mt: 2,
+                backgroundColor: "#FEC10E",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#E0A90C",
+                },
+              }}
+            >
               Next
             </Button>
           </>
@@ -269,7 +320,16 @@ const EmployerSignupPage: React.FC = () => {
             <Button
               onClick={addLocation}
               variant="outlined"
-              sx={{ mt: 2, mr: 2 }}
+              sx={{
+                mt: 2,
+                mr: 2,
+                borderColor: "#FEC10E",
+                color: "#FEC10E",
+                "&:hover": {
+                  borderColor: "#E0A90C",
+                  color: "#E0A90C",
+                },
+              }}
             >
               Add Location
             </Button>
@@ -292,11 +352,31 @@ const EmployerSignupPage: React.FC = () => {
             <Button
               onClick={handleBack}
               variant="outlined"
-              sx={{ mt: 2, mr: 2 }}
+              sx={{
+                mt: 2,
+                mr: 2,
+                borderColor: "#FEC10E",
+                color: "#FEC10E",
+                "&:hover": {
+                  borderColor: "#E0A90C",
+                  color: "#E0A90C",
+                },
+              }}
             >
               Back
             </Button>
-            <Button onClick={handleNext} variant="contained" sx={{ mt: 2 }}>
+            <Button
+              onClick={handleNext}
+              variant="contained"
+              sx={{
+                mt: 2,
+                backgroundColor: "#FEC10E",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#E0A90C",
+                },
+              }}
+            >
               Next
             </Button>
           </>
@@ -358,14 +438,30 @@ const EmployerSignupPage: React.FC = () => {
             <Button
               onClick={handleBack}
               variant="outlined"
-              sx={{ mt: 2, mr: 2 }}
+              sx={{
+                mt: 2,
+                mr: 2,
+                borderColor: "#FEC10E",
+                color: "#FEC10E",
+                "&:hover": {
+                  borderColor: "#E0A90C",
+                  color: "#E0A90C",
+                },
+              }}
             >
               Back
             </Button>
             <Button
               onClick={() => navigate("/home-employer")}
               variant="contained"
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                backgroundColor: "#FEC10E",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#E0A90C",
+                },
+              }}
             >
               Finish
             </Button>
