@@ -8,7 +8,7 @@ import StudentProfile from "./routes/StudentProfile";
 import Home from "./routes/Home";
 import TrackApplications from "./routes/TrackApplications.tsx";
 import JobBoard from "./routes/JobBoard.tsx";
-import CreateJobs from "./routes/CreateJobs.tsx";
+import ApplicationManagement from "./routes/ApplicationManagement";
 import LearningLibrary from "./routes/LearningLibrary.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
@@ -84,11 +84,11 @@ const router = createBrowserRouter([
         path: "/employer-student-search",
         element: <EmployerStudentSearchPage />,
       },
+      {
+        path: "/track-applications",
+        element: <TrackApplications />,
+      },
     ],
-  },
-  {
-    path: "/track-applications",
-    element: <TrackApplications />,
   },
   {
     path: "/signup",
@@ -99,12 +99,16 @@ const router = createBrowserRouter([
     element: <EmployerSignUp />,
   },
   {
+    path: "/home",
+    element: <Home />,
+  },
+  {
     path: "/home-employer",
     element: <EmployerHome />,
   },
   {
-    path: "/create-a-job",
-    element: <CreateJobs />,
+    path: "/application-management",
+    element: <ApplicationManagement />,
   },
   {
     path: "/learning-library",
@@ -119,5 +123,5 @@ createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </StyledEngineProvider>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

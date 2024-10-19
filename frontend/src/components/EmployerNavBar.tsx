@@ -57,7 +57,7 @@ const EmployerNavBar = () => {
 
   // Menu items for the avatar dropdown
   const profileMenuItems = [
-    { label: "Profile", to: "/profile", icon: <AccountCircleIcon /> },
+    { label: "Profile", to: "/employer-profile", icon: <AccountCircleIcon /> },
     { label: "Dashboard", to: "/home-employer", icon: <DashboardIcon /> },
     { label: "Logout", to: "/", icon: <LogoutIcon /> },
   ];
@@ -98,7 +98,7 @@ const EmployerNavBar = () => {
           <Tab
             label="Applicant Search"
             component={Link}
-            to="/applicant-search"
+            to="/employer-student-search"
           />
           <Tab
             label="Application Management"

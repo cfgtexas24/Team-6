@@ -27,7 +27,7 @@ const Login: React.FC = () => {
       if (redirectParam) {
         navigate(redirectParam);
       } else {
-        navigate("/");
+        navigate("/home");
       }
     });
   };
