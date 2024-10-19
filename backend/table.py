@@ -1,12 +1,10 @@
 from flask import Flask, jsonify
 import mysql.connector
 from config import Config
-app= Flask(name)
+app= Flask(__name__)
 
 app.config.from_object(Config)
-import mysql.connector
-from config import Config
-app= Flask(__name__)
+
 
 
 conn = mysql.connector.connect(
@@ -14,7 +12,7 @@ conn = mysql.connector.connect(
             password=app.config['MYSQL_PASSWORD'],
             host=app.config['MYSQL_HOST'],
             database=app.config['MYSQL_DB']
-        ) 
+        )
 
 cursor = conn.cursor()
 
@@ -43,14 +41,15 @@ cursor.execute('''
 
 print("table created successfully")
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Employer(id INT PRIMARY KEY AUTO_INCREMENT,
-               email VARCHAR(50) NOT NULL UNIQUE) ''' )
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Employer(
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                email VARCHAR(50) NOT NULL UNIQUE) ''' )
 
 
 cursor.execute('''
 
     CREATE TABLE IF NOT EXISTS Post(
-        id INT PRIMARY KEY AUTO_INCREMENT,
         id INT PRIMARY KEY AUTO_INCREMENT,
         title VARCHAR(100) NOT NULL,
         content VARCHAR(500) NOT NULL,
@@ -82,7 +81,6 @@ print("table comments created successfully")
 
 
 print("table created successfully")
-cusor.close()
 cusor.close()
 
 
