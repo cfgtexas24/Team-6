@@ -43,10 +43,8 @@ const Root: FC = () => {
     );
   }
 
-  // Fix: Might be easier to not use NavBar in root? Will need unique NavBars for each page i.e. LandingNavBar, UserNavBar, EmployerNavBar, etc.
   return (
     <>
-      <LandingNavbar />
       <Outlet />
     </>
   );

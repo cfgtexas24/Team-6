@@ -32,7 +32,6 @@ const DropdownMenu = ({
   <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
     {menuItems.map((item, index) => (
       <MenuItem key={index} component={Link} to={item.to}>
-        {/* Add the ListItemIcon for the icon */}
         <ListItemIcon>{item.icon}</ListItemIcon>
         {item.label}
       </MenuItem>
@@ -40,45 +39,28 @@ const DropdownMenu = ({
   </Menu>
 );
 
-const UserNavBar = () => {
+const EmployerNavBar = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const [currentMenu, setCurrentMenu] = useState<
-    "education" | "career" | "profile" | null
-  >(null);
-
-  const handleOpenMenu =
-    (menuType: "education" | "career" | "profile") =>
-    (event: React.MouseEvent<HTMLElement>) => {
-      setMenuAnchor(event.currentTarget);
-      setCurrentMenu(menuType);
-    };
-
-  const handleCloseMenu = () => {
-    setMenuAnchor(null);
-    setCurrentMenu(null);
-  };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
-  const menuConfig = {
-    education: [
-      { label: "Learning Library", to: "/learning-library", icon: null },
-      { label: "Community Forums", to: "/community-forums", icon: null },
-    ],
-    career: [
-      { label: "Resume Review", to: "/resume-review", icon: null },
-      { label: "Track Applications", to: "/track-applications", icon: null },
-      { label: "Talk to an Alumni", to: "/talk-to-alumni", icon: null },
-    ],
-    profile: [
-      { label: "Profile", to: "/profile", icon: <AccountCircleIcon /> },
-      { label: "Dashboard", to: "/dashboard", icon: <DashboardIcon /> },
-      { label: "Logout", to: "/logout", icon: <LogoutIcon /> },
-    ],
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchor(event.currentTarget);
   };
+
+  const handleCloseMenu = () => {
+    setMenuAnchor(null);
+  };
+
+  // Menu items for the avatar dropdown
+  const profileMenuItems = [
+    { label: "Profile", to: "/profile", icon: <AccountCircleIcon /> },
+    { label: "Dashboard", to: "/dashboard", icon: <DashboardIcon /> },
+    { label: "Logout", to: "/logout", icon: <LogoutIcon /> },
+  ];
 
   return (
     <AppBar
@@ -113,33 +95,35 @@ const UserNavBar = () => {
             },
           }}
         >
-          <Tab label="Job Board" component={Link} to="/job-board" />
           <Tab
-            label="Education Resources"
-            onClick={handleOpenMenu("education")}
+            label="Applicant Search"
+            component={Link}
+            to="/applicant-search"
           />
-          <Tab label="Career Resources" onClick={handleOpenMenu("career")} />
+          <Tab
+            label="Application Management"
+            component={Link}
+            to="/application-management"
+          />
         </Tabs>
 
         {/* Avatar with Profile Dropdown */}
         <Box>
-          <IconButton onClick={handleOpenMenu("profile")}>
-            <Avatar alt="User Avatar" src={stockManPhoto} />
+          <IconButton onClick={handleOpenMenu}>
+            <Avatar alt="Employer Avatar" src={stockManPhoto} />
           </IconButton>
         </Box>
 
-        {/* Menus */}
-        {currentMenu && (
-          <DropdownMenu
-            anchorEl={menuAnchor}
-            open={Boolean(menuAnchor)}
-            onClose={handleCloseMenu}
-            menuItems={menuConfig[currentMenu]}
-          />
-        )}
+        {/* Avatar Dropdown Menu */}
+        <DropdownMenu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={handleCloseMenu}
+          menuItems={profileMenuItems}
+        />
       </Toolbar>
     </AppBar>
   );
 };
 
-export default UserNavBar;
+export default EmployerNavBar;
