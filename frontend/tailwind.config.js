@@ -33,6 +33,10 @@ export default {
         writeSignature: "writeSignature 4s ease-out forwards",
         floatUp: "floatUp 1s ease-out forwards",
       },
+      textColor: {
+        primary: '#FEC10E',
+        secondary: '#475299',
+      },
     },
   },
   plugins: [],

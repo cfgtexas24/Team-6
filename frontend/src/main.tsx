@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./routes/Home";
+import StudentProfile from "./routes/StudentProfile"
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 // Setup Tailwind CSS:
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/student-profile",
+    element: <StudentProfile />,
+  }
 ]);
 
 createRoot(document.getElementById("root")!).render(
