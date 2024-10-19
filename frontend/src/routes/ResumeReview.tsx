@@ -8,6 +8,7 @@ const ResumeReview: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+    setError("");
     setIsLoading(true);
     setResponseText("");
     event.preventDefault();
@@ -18,9 +19,9 @@ const ResumeReview: FC = () => {
       method: "POST",
       body: formData,
     });
+    setIsLoading(false);
     if (!res.ok || !res.body) {
       setError("Failed to parse resume");
-      setIsLoading(false);
       return;
     }
 
@@ -29,7 +30,6 @@ const ResumeReview: FC = () => {
     while (true) {
       const { done, value } = await reader.read();
       if (done) {
-        setIsLoading(false);
         return;
       }
 
@@ -45,11 +45,20 @@ const ResumeReview: FC = () => {
       <Typography variant="h3" className="text-center mt-16">
         Resume Review
       </Typography>
+      <Typography variant="h6" className="text-center mt-4">
+        No data is shared with third parties, and the resume is not stored.
+      </Typography>
       <form encType="multipart/form-data" onSubmit={handleSubmit}>
         <Box className="flex flex-row gap-4 w-full justify-center mt-16">
           <Button component="label">
             Choose File
-            <input type="file" hidden name="resume" disabled={isLoading} />
+            <input
+              type="file"
+              hidden
+              name="resume"
+              disabled={isLoading}
+              accept="application/pdf"
+            />
           </Button>
           <Button variant="contained" type="submit" disabled={isLoading}>
             Upload
