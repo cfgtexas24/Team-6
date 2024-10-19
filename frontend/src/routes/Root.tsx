@@ -2,7 +2,7 @@ import { Alert } from "@mui/material";
 import { FC, useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { checkUserAuth } from "../util/authentication";
-import UserNavBar from "../components/UserNavBar";
+import LandingNavbar from "../components/LandingNavBar";
 
 // These pathnames will not check authentication. They must be an exact match with the current path
 const unauthenticatedPaths = ["/", "/login"];
@@ -46,7 +46,7 @@ const Root: FC = () => {
   // Fix: Might be easier to not use NavBar in root? Will need unique NavBars for each page i.e. LandingNavBar, UserNavBar, EmployerNavBar, etc.
   return (
     <>
-      <UserNavBar />
+      <LandingNavbar />
       <Outlet />
     </>
   );
