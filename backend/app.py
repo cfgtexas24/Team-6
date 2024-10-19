@@ -39,7 +39,7 @@ def get_conn_database():
 #when logged in you will get jwt token
 @app.route('/login', methods=['POST'])
 def login():
-    user_name = request.json.get("user_name", None)
+    username = request.json.get("user_name", None)
     password = request.json.get("password", None)
 
     if not username or not password :
@@ -64,20 +64,6 @@ def add_user():
     conn.commit()
 
     return jsonify({'message':'User added sucessfully!'}),201
-
-
-#route to get all Employers
-@app.route('/Employers',methods=['GET'])
-def get_employers():
-    #renamed function to get employer
-    conn=get_conn_database()
-    Employers=conn.execute('SELECT * FROM Employers').fetchall()
-    conn.close()
-
-    #convert data fetch into dictionary and send json reponse
-
-    user_list=[dict(Employers) for user in Employers]
-    return jsonify(user_list)
 
 
 #route to add new employer user
@@ -115,7 +101,7 @@ def add_employer():
 
 
 
-#route to add new post
+#route to add new comments
 @app.route('/comments', methods=['POST'])
 def add_post():
     data=request.get_json()
@@ -125,7 +111,7 @@ def add_post():
 
 
 
-    if not title or not post_id or not username :
+    if not title or not content or not username :
         return(jsonify({'message':'Need to provide the following information'}),400)
     conn,cursor=get_conn_database()
 
