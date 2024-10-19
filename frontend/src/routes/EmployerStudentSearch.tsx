@@ -401,28 +401,28 @@ const EmployerStudentSearchPage: FC = () => {
       <div className="flex mb-6 space-x-4">
         <FilterDropdown
           title="Skills"
-          options={['technical', 'languages', 'certifications', 'soft skills', 'other']}
+          options={['Technical', 'Languages', 'Certifications', 'Soft Skills', 'Other']}
           selected={selectedSkill}
           setSelected={setSelectedSkill}
           dropdownKey="skills"
         />
         <FilterDropdown
           title="Job Type"
-          options={['internship', 'part-time', 'full-time', 'other']}
+          options={['Internship', 'Part-Time', 'Full-Time', 'Other']}
           selected={jobType}
           setSelected={setJobType}
           dropdownKey="jobType"
         />
         <FilterDropdown
           title="Location"
-          options={['remote', 'San Francisco, CA', 'Los Angeles, CA', 'san diego', 'portland', 'seattle', 'omaha', 'chicago', 'dallas', 'houston', 'austin', 'salt lake city', 'phoenix', 'denver', 'st. louis', 'indianapolis', 'atlanta', 'charlotte', 'washington dc', 'new york', 'jersey city', 'boston', 'other']}
+          options={['Remote', 'San Francisco, CA', 'Los Angeles, CA', 'San Diego, CA', 'Portland, OR', 'Seattle, WA', 'Omaha, NE', 'Chicago, IL', 'Dallas, TX', 'Houston, TX', 'Austin, TX', 'Salt Lake City, UT', 'Phoenix, AZ', 'Denver, CO', 'St. Louis, MO', 'Indianapolis, IN', 'Atlanta, GA', 'Charlotte, NC', 'Washington D.C.', 'New York, NY', 'Jersey City, NJ', 'Boston, MA', 'Other']}
           selected={location}
           setSelected={setLocation}
           dropdownKey="location"
         />
         <FilterDropdown
           title="Work Preference"
-          options={['hybrid', 'remote', 'on-site', 'any', 'other']}
+          options={['Hybrid', 'Remote', 'On-Site', 'Any', 'Other']}
           selected={workPreference}
           setSelected={setWorkPreference}
           dropdownKey="workPreference"
