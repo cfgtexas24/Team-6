@@ -15,6 +15,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import Forum from "./routes/Forum";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,18 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/community-forums",
+        element: <Forum />,
+      },
+      {
+        path: "/community-forums/:category",
+        element: <Forum />,
+      },
+      {
+        path: "/community-forums/:category/:post",
+        element: <Forum />,
       },
       {
         path: "/login",
