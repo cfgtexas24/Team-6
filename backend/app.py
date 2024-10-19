@@ -34,12 +34,7 @@ def login():
     password = request.json.get("password", None)
 
     if not user_name or not password :
-        return jsonify({"msg": "Bad username or password"}), 401
-    with get_conn_database() as conn:
-        cursor = conn.execute('SELECT user_name, role FROM Users WHERE user_name = ?', (username,))
-        result = cursor.fetchone()
-        role = result['role']
-        access_token = create_access_token(identity={"role":role})
+        access_token = create_access_token(identity={username})
         return jsonify(access_token=access_token)
 
 
@@ -94,7 +89,7 @@ def add_employer():
 
 
 
-#route to add new post 
+#route to add new post
 @app.route('/Post', methods=['POST'])
 def add_post():
     data=request.get_json()
@@ -118,4 +113,4 @@ def add_post():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=9000)
