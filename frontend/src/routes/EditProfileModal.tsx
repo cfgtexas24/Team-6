@@ -1,7 +1,6 @@
-// EditProfileModal.tsx
 import { FC } from 'react';
-import CreateIcon from '@mui/icons-material/Create';
 
+//data type defintions for modal/profile inputs
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,7 +25,6 @@ interface EditProfileModalProps {
 const EditProfileModal: FC<EditProfileModalProps> = ({
   isOpen,
   onClose,
-  profilePicture,
   onProfilePictureChange,
   bio,
   setBio,
