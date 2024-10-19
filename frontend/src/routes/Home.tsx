@@ -309,29 +309,9 @@ const LandingPage = () => {
 
       {/* Footer Section */}
       <footer className="bg-gray-800 text-white py-8">
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6">Contact Us</Typography>
-            <Typography variant="body2">Email: info@company.com</Typography>
-            <Typography variant="body2">Phone: (123) 456-7890</Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6">Follow Us</Typography>
-            <Typography variant="body2">
-              Facebook | Twitter | Instagram
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6">About</Typography>
-            <Typography variant="body2">
-              We are committed to providing the best educational resources for
-              career growth.
-            </Typography>
-          </Grid>
-        </Grid>
         <Box textAlign="center" mt={4}>
           <Typography variant="body2">
-            © 2024 Your Company. All rights reserved.
+            © 2023 ReBirth Empowerment Education. All Rights Reserved.
           </Typography>
         </Box>
       </footer>

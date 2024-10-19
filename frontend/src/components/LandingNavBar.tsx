@@ -6,7 +6,8 @@ import REE from "../assets/REE.png";
 
 const LandingNavbar = () => {
   return (
-    <AppBar position="fixed" color="transparent" elevation={0}>
+    // bug: sticky is not making the NavBar stay absolute
+    <AppBar position="sticky" color="transparent" elevation={0}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
         <Box component="div" sx={{ display: "flex", alignItems: "center" }}>
