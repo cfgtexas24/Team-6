@@ -101,14 +101,14 @@ def add_post():
     title=data['title']
     content=data['content']
     user_name=data['username']
-    created_at=data['created_at']
 
 
-    if not title or not content or not user_name or not created_at:
+
+    if not title or not content or not user_name :
         return(jsonify({'message':'Need to provide the following information'}),400)
 
     conn=get_conn_database()
-    conn.execute('INSERT INTO Post (title, content,user_name,created_at) VALUES (?,?,?,?)', ( title, content, user_name,created_at))
+    conn.execute('INSERT INTO Post (title, content,user_name) VALUES (?,?,?)', ( title, content, user_name))
     conn.commit()
     conn.close()
 
@@ -116,19 +116,19 @@ def add_post():
 
 #route to add new comment
 @app.route('/comments', methods=['POST'])
-def add_post():
+def add_comment():
     data=request.get_json()
     title=data['title']
     post_id=data['post_id']
     username=data['username']
-    created_at=data['created_at']
+  
 
 
-    if not title or not post_id or not username or not created_at:
+    if not title or not post_id or not username :
         return(jsonify({'message':'Need to provide the following information'}),400)
 
     conn=get_conn_database()
-    conn.execute('INSERT INTO comments (title,post_id,user_name,created_at) VALUES (?,?,?,?)', ( title, post_id, username,created_at))
+    conn.execute('INSERT INTO comments (title,post_id,user_name) VALUES (?,?,?)', ( title, post_id, username))
     conn.commit()
     conn.close()
 
