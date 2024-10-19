@@ -131,39 +131,65 @@ def add_employer():
 
 
 
-#route to add new post
-@app.route('/post', methods=['POST'])
+@app.route('/post', methods=['POST', 'GET'])
 def add_post():
-    data=request.get_json()
-    title=data['title']
-    content=data['content']
-    username=data['username']
-
-
-
-    if not title or not content or not username :
-        return(jsonify({'message':'Need to provide the following information'}),400)
-    conn,cursor=get_conn_database()
+    
+    conn, cursor = get_conn_database()
 
     if not conn:
         return jsonify({'message': 'Database connection failed'}), 500
 
+    if request.method == 'POST':
+        data = request.get_json()
+        title = data.get['title']
+        content = data.get['content']
+        username = data.get['username']
 
+        if not title or not content or not username:
+            return jsonify({'message': 'Need to provide the following information'}), 400
 
-    try:
-        insert_query='INSERT INTO Post (title,content,username) VALUES (%s,%s,%s)'
-        cursor.execute(insert_query,(title,content,username))
-        conn.commit()
+        try:
+            # place into post table
+            insert_query = 'INSERT INTO Post (title, content, username) VALUES (%s, %s, %s)'
+            cursor.execute(insert_query, (title, content, username))
+            conn.commit()
 
-        return jsonify({'message':'post added sucessfully!'}),201
+            return jsonify({'message': 'Post added successfully!'}), 201
 
-    except Exception as e:
-        conn.rollback()  # Rollback in case of any error
-        return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
+        except Exception as e:
+            conn.rollback()  
+            return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
 
-    finally:
-        cursor.close()  # Close the cursor
-        conn.close()  # Close the connection
+        finally:
+            cursor.close()  
+            conn.close()  
+
+    elif request.method == 'GET':
+        try:
+            #get all the data 
+            cursor.execute('SELECT * FROM Post')
+            posts = cursor.fetchall()
+
+            # place the info into dic
+            all_posts = []
+            for post in posts:
+                all_posts.append({
+                    'id': post[0],         
+                    'title': post[1],      
+                    'content': post[2],    
+                    'username': post[3],   
+                    'created_at': post[4] 
+                })
+
+            return jsonify(all_posts), 200
+
+        except Exception as e:
+            return jsonify({'message': 'Failed to fetch posts', 'error': str(e)}), 500
+
+        finally:
+            cursor.close()
+            conn.close()
+
 
 #route to add new comment
 @app.route('/comments', methods=['POST'])
