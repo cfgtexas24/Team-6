@@ -13,6 +13,7 @@ import {
 import { getToken, getUserId } from "../util/authentication";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { io } from "socket.io-client";
+import UserNavBar from "../components/UserNavBar";
 
 const chatSocket = io(`ws://${import.meta.env.VITE_CHAT_ADDRESS}`, {
   extraHeaders: {
@@ -70,6 +71,7 @@ const DirectMessage: FC = () => {
 
   return (
     <>
+      <UserNavBar />
       <IconButton onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </IconButton>

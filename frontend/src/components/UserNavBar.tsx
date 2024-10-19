@@ -113,7 +113,7 @@ const UserNavBar = () => {
             },
           }}
         >
-          <Tab label="Job Board" component={Link} to="/job-board" />
+          <Tab label="Job Board" component={Link} to="/jobs" />
           <Tab
             label="Education Resources"
             onClick={handleOpenMenu("education")}

@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import stockManPhoto from "../assets/stockManPhoto.jpg";
+import UserNavBar from "../components/UserNavBar";
 
 async function getAlumni() {
   const url = new URL("/alumni", import.meta.env.VITE_API_ADDRESS);
@@ -33,15 +34,26 @@ const Alumni: FC = () => {
   });
 
   if (isLoading) {
-    return <LinearProgress />;
+    return (
+      <>
+        <UserNavBar />
+        <LinearProgress />
+      </>
+    );
   }
 
   if (isError || !alumni) {
-    return <Alert severity="error">{error?.message ?? "Unknown Error"}</Alert>;
+    return (
+      <>
+        <UserNavBar />
+        <Alert severity="error">{error?.message ?? "Unknown Error"}</Alert>
+      </>
+    );
   }
 
   return (
     <>
+      <UserNavBar />
       <Typography variant="h3" className="m-4">
         Talk to Alumni
       </Typography>
