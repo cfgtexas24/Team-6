@@ -1,15 +1,20 @@
 from flask import Flask, jsonify,request
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
-import sqlite3
 from dotenv import load_dotenv
-load_dotenv()
+from flask_cors import CORS
 import os
+import sqlite3
+load_dotenv()
+
+
+
 
 secret = os.getenv("secret")
 load_dotenv()
 
 app= Flask(__name__)
 app.config.from_prefixed_env()
+CORS(app)
 
 
 app.config["JWT_SECRET_KEY"] = secret# Change this!
