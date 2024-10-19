@@ -35,8 +35,8 @@ def get_conn_database():
             print("Connected to MySQL database")
             cursor = conn.cursor()
             return conn, cursor  # Return both connection and cursor
-    except Error as e:
-        print(f"Error: {e}")
+    except:
+        print("Error")
         return None, None  # Return None if there was an error
 
 def get_user_role(username, password):
@@ -54,7 +54,7 @@ def get_user_role(username, password):
         else:
             return None, "Invalid Username or Password"
 
-    except mysql.connector.Error as e:
+    except mysql.connector.error as e:
         return None, "Error Fetching data"
     finally:
         cursor.close()
