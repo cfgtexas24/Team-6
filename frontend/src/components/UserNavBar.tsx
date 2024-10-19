@@ -74,9 +74,9 @@ const UserNavBar = () => {
       { label: "Talk to an Alumni", to: "/talk-to-alumni", icon: null },
     ],
     profile: [
-      { label: "Profile", to: "/profile", icon: <AccountCircleIcon /> },
-      { label: "Dashboard", to: "/dashboard", icon: <DashboardIcon /> },
-      { label: "Logout", to: "/logout", icon: <LogoutIcon /> },
+      { label: "Profile", to: "/student-profile", icon: <AccountCircleIcon /> },
+      { label: "Dashboard", to: "/home", icon: <DashboardIcon /> },
+      { label: "Logout", to: "/", icon: <LogoutIcon /> },
     ],
   };
 

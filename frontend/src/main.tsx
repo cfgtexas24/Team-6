@@ -6,8 +6,11 @@ import SignUp from "./routes/SignUp";
 import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
 import Home from "./routes/Home";
+import TrackApplications from "./routes/TrackApplications.tsx";
 import JobBoard from "./routes/JobBoard.tsx";
 import ApplicationManagement from "./routes/ApplicationManagement";
+import CreateJobs from "./routes/CreateJobs.tsx";
+import LearningLibrary from "./routes/LearningLibrary.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -20,9 +23,13 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import EmployerProfilePage from "./routes/EmployerProfile";
+import EmployerStudentSearchPage from "./routes/EmployerStudentSearch";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
+import ResumeReview from "./routes/ResumeReview.tsx";
+import EmployerHome from "./routes/EmployerHome.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +39,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Landing />, // Use Landing from fe-sign-up-screens
+        element: <Landing />,
       },
       {
         path: "/community-forums",
@@ -56,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/jobs",
-        element: <JobBoard />, // Use JobBoard from main
+        element: <JobBoard />,
       },
       {
         path: "/direct-message/:otherUser",
@@ -66,23 +73,49 @@ const router = createBrowserRouter([
         path: "/talk-to-alumni",
         element: <Alumni />,
       },
+      {
+        path: "/resume-review",
+        element: <ResumeReview />,
+      },
+      {
+        path: "/employer-profile",
+        element: <EmployerProfilePage />,
+      },
+      {
+        path: "/employer-student-search",
+        element: <EmployerStudentSearchPage />,
+      },
+      {
+        path: "/track-applications",
+        element: <TrackApplications />,
+      },
     ],
   },
   {
     path: "/signup",
-    element: <SignUp />, // Use SignUp from fe-sign-up-screens
+    element: <SignUp />,
   },
   {
-    path: "/jobs",
-    element: <JobBoard />,
+    path: "/signup-employer",
+    element: <EmployerSignUp />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
+  },
+  {
+    path: "/home-employer",
+    element: <EmployerHome />,
   },
   {
     path: "/application-management",
     element: <ApplicationManagement />
+    path: "/create-a-job",
+    element: <CreateJobs />,
   },
   {
-    path: "/signup-employer",
-    element: <EmployerSignUp />, // Use EmployerSignUp from fe-sign-up-screens
+    path: "/learning-library",
+    element: <LearningLibrary />,
   },
 ]);
 

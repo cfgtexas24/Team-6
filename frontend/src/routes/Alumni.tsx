@@ -5,8 +5,9 @@ import {
   Button,
   Card,
   CardContent,
-  LinearProgress,
+  CircularProgress,
   Typography,
+  Badge,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
@@ -14,10 +15,20 @@ import { useNavigate } from "react-router-dom";
 import stockManPhoto from "../assets/stockManPhoto.jpg";
 import UserNavBar from "../components/UserNavBar";
 
+// async function getAlumni() {
+//   const url = new URL("/alumni", import.meta.env.VITE_API_ADDRESS);
+//   const res = await fetch(url);
+//   return (await res.json()) as { name: string; status: "online" | "offline" }[];
+// }
+
 async function getAlumni() {
-  const url = new URL("/alumni", import.meta.env.VITE_API_ADDRESS);
-  const res = await fetch(url);
-  return (await res.json()) as string[];
+  const dummyAlumniData = [
+    { name: "John Doe", status: "online" },
+    { name: "Jane Smith", status: "offline" },
+    { name: "Michael Johnson", status: "online" },
+    { name: "Emily Davis", status: "offline" },
+  ];
+  return dummyAlumniData;
 }
 
 const Alumni: FC = () => {
@@ -37,7 +48,16 @@ const Alumni: FC = () => {
     return (
       <>
         <UserNavBar />
-        <LinearProgress />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
       </>
     );
   }
@@ -46,7 +66,9 @@ const Alumni: FC = () => {
     return (
       <>
         <UserNavBar />
-        <Alert severity="error">{error?.message ?? "Unknown Error"}</Alert>
+        <Box sx={{ p: 4 }}>
+          <Alert severity="error">{error?.message ?? "Unknown Error"}</Alert>
+        </Box>
       </>
     );
   }
@@ -54,25 +76,87 @@ const Alumni: FC = () => {
   return (
     <>
       <UserNavBar />
-      <Typography variant="h3" className="m-4">
-        Talk to Alumni
-      </Typography>
-      {alumni.map((name) => (
-        <Card className="m-4">
-          <CardContent>
-            <Box className="flex flex-row gap-4 mb-4">
-              <Avatar alt="User Avatar" src={stockManPhoto} />
-              <Typography variant="h4">{name}</Typography>
-            </Box>
-            <Button
-              onClick={() => navigate(`/direct-message/${name}`)}
-              variant="outlined"
+      <Box sx={{ p: 4 }}>
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: "bold",
+            mb: 4,
+            color: "#333",
+            textAlign: "center",
+          }}
+        >
+          Talk to Alumni
+        </Typography>
+
+        {/* Alumni List */}
+        <Box sx={{ display: "grid", gap: 4, gridTemplateColumns: "1fr 1fr" }}>
+          {alumni.map(({ name, status }) => (
+            <Card
+              key={name}
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                borderRadius: "12px",
+                boxShadow: 2,
+              }}
             >
-              Message
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
+              <CardContent>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    mb: 3,
+                  }}
+                >
+                  {/* Online/Offline Badge */}
+                  <Badge
+                    overlap="circular"
+                    variant="dot"
+                    sx={{
+                      "& .MuiBadge-dot": {
+                        backgroundColor:
+                          status === "online" ? "#44b700" : "#888",
+                        color: status === "online" ? "#44b700" : "#888",
+                        boxShadow: `0 0 0 2px white`,
+                      },
+                    }}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                  >
+                    <Avatar
+                      alt={`${name} Avatar`}
+                      src={stockManPhoto}
+                      sx={{ width: 56, height: 56, mr: 2 }}
+                    />
+                  </Badge>
+                  <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                    {name}
+                  </Typography>
+                </Box>
+                <Button
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    backgroundColor: "#FEC10E",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#E0A90C",
+                    },
+                  }}
+                  onClick={() => navigate(`/direct-message/${name}`)}
+                >
+                  Message
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
+      </Box>
     </>
   );
 };
