@@ -12,13 +12,11 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import REE from "../assets/REE.png";
-import stockmanPhoto from "../assets/stockmanPhoto.jpg";
-
-// Import icons from Material-UI
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
+import REE from "../assets/REE.png";
+import stockManPhoto from "../assets/stockManPhoto.jpg";
 
 const DropdownMenu = ({
   anchorEl,
@@ -103,7 +101,7 @@ const UserNavBar = () => {
         {/* Avatar with Profile Dropdown */}
         <Box>
           <IconButton onClick={handleOpenMenu("profile")}>
-            <Avatar alt="User Avatar" src={stockmanPhoto} />
+            <Avatar alt="User Avatar" src={stockManPhoto} />
           </IconButton>
         </Box>
 
