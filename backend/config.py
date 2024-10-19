@@ -10,5 +10,5 @@ host = os.getenv('ip_addr')
 class Config:
     MYSQL_USER = username
     MYSQL_PASSWORD = password
-    MYSQL_DB = test
+    MYSQL_DB = database
     MYSQL_HOST = host
