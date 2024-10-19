@@ -34,48 +34,43 @@ cursor = conn.cursor()
 
 print("database open successfully!!")
 cursor.execute('''
-      CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT,
-cursor.execute('''
-      CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                      user_name TEXT NOT NULL,
-                                      password TEXT NOT NULL,
-                                      role TEXT NOT NULL,
-                                      email TEXT NOT NULL UNIQUE)''')
+      CREATE TABLE IF NOT EXISTS Users(id INT PRIMARY KEY AUTO_INCREMENT,
+                                      username VARCHAR(20) NOT NULL,
+                                      password VARCHAR(50) NOT NULL,
+                                      role VARCHAR(50) NOT NULL,
+                                      email VARCHAR(50) NOT NULL UNIQUE)''')
 
 
 print("table created successfully")
 
-cursor.execute('''CREATE TABLE IF NOT EXIST Employer(id INTEGER PRIMARY KEY AUTOINCREMENT,
-               email TEXT NOT NULL UNIQUE) ''' )
+cursor.execute('''CREATE TABLE IF NOT EXIST Employer(id INT PRIMARY KEY AUTO_INCREMENT,
+               email VARCHAR(50) NOT NULL UNIQUE) ''' )
 
 
 cursor.execute('''
-cursor.execute('''
+
     CREATE TABLE IF NOT EXISTS Post(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        content TEXT NOT NULL,
-        username TEXT NOT NULL,
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        title VARCHAR(100) NOT NULL,
+        content VARCHAR(500) NOT NULL,
+        username VARCHAR(50) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        user_id INTEGER,
+        user_id INT,
         FOREIGN KEY(user_id) REFERENCES Users(id)
     )
 ''')
 print("table post created successfully")
 
-cursor.execute('''
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS comments(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        post_id INTEGER NOT NULL,
-        post_id INTEGER NOT NULL,
-        username TEXT NOT NULL,
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        title VARCHAR(100) NOT NULL,
+        post_id INT NOT NULL,
+        username VARCHAR(50) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        user_id INTEGER,
-        user_id INTEGER,
+        user_id INT,
         FOREIGN KEY(post_id) REFERENCES Post(id),
         FOREIGN KEY(user_id) REFERENCES Users(id)
     )
