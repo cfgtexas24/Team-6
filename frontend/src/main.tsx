@@ -5,10 +5,9 @@ import Landing from "./routes/Landing";
 import SignUp from "./routes/SignUp";
 import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
-import Home from "./routes/Home";
 import JobBoard from "./routes/JobBoard.tsx";
+import CreateJobs from "./routes/CreateJobs.tsx";
 import LearningLibrary from "./routes/LearningLibrary.tsx";
-
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -24,6 +23,7 @@ import "@fontsource/roboto/700.css";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
+import ResumeReview from "./routes/ResumeReview.tsx";
 import EmployerHome from "./routes/EmployerHome.tsx";
 
 const router = createBrowserRouter([
@@ -68,6 +68,10 @@ const router = createBrowserRouter([
         path: "/talk-to-alumni",
         element: <Alumni />,
       },
+      {
+        path: "/resume-review",
+        element: <ResumeReview />,
+      },
     ],
   },
   {
@@ -75,12 +79,24 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/signup-employer",
-    element: <EmployerSignUp />,
+    path: "/jobs",
+    element: <JobBoard />,
   },
   {
-    path: "/home",
-    element: <Home />,
+    path: "/create-a-job",
+    element: <CreateJobs />,
+  },
+  {
+    path: "/jobs",
+    element: <JobBoard />,
+  },
+  {
+    path: "/create-a-job",
+    element: <CreateJobs />,
+  },
+  {
+    path: "/signup-employer",
+    element: <EmployerSignUp />,
   },
   {
     path: "/home-employer",
