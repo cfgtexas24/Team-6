@@ -5,7 +5,7 @@ export default {
     extend: {
       textColor: {
         primary: '#FEC10E',
-        secondary: '#FEC10E',
+        secondary: '#475299',
       },
     },
   },
