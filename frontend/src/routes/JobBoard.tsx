@@ -19,57 +19,52 @@ const JobBoard: FC = () => {
   );
 
   return (
-    <div className="job-board flex flex-col p-6 bg-white border-2 border-gray-200 rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Jobs</h1>
+    <div className="job-board flex flex-col p-8 bg-gray-50 border border-gray-200 rounded-lg shadow-lg">
+      <h1 className="text-4xl font-bold text-[#475299] mb-6">Jobs</h1>
 
       {/* Search / Filter */}
-      <div className="flex mb-4">
-        <input
-          type="text"
-          placeholder="Search for jobs..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded-full p-3 w-3/4 mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div className="flex mb-6">
+        {/* Search Bar */}
+        <div className="relative w-3/4 mr-4">
+          <input
+            type="text"
+            placeholder="Search for jobs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-1/2 space-x-4 border border-gray-300 rounded-full p-3 pl-5 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#475299] transition-all"
+          />
+        </div>
+
+        {/* Filter Buttons */}
         <div className="flex space-x-2">
-          <button
-            onClick={() => setJobType('all')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'all' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setJobType('intern')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'intern' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
-          >
-            Intern
-          </button>
-          <button
-            onClick={() => setJobType('full-time')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'full-time' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
-          >
-            Full-Time
-          </button>
-          <button
-            onClick={() => setJobType('part-time')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'part-time' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
-          >
-            Part-Time
-          </button>
+          {['all', 'intern', 'full-time', 'part-time'].map(type => (
+            <button
+              key={type}
+              onClick={() => setJobType(type as any)}
+              className={`w-28 px-4 py-3 rounded-full transition-all ${
+                jobType === type ? 'bg-[#475299] text-white font-bold shadow-lg' : 'bg-white border border-gray-300'
+              } hover:bg-[#475299] hover:text-white`}
+            >
+              {type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Job Listings / Job Details */}
       <div className="flex w-full">
-        <div className="job-listings w-1/2 pr-4 overflow-auto" style={{ maxHeight: '600px' }}>
+        {/* Job Listings */}
+        <div className="job-listings w-1/2 pr-4 overflow-auto space-y-4" style={{ maxHeight: '600px' }}>
           {filteredJobs.length > 0 ? (
             filteredJobs.map(job => (
-              <div 
-                key={job.id} 
-                className={`job-listing p-4 border-b border-gray-300 cursor-pointer ${selectedJob?.id === job.id ? 'bg-[#c5cae8]' : 'hover:bg-gray-100'}`}
+              <div
+                key={job.id}
+                className={`job-listing p-4 border border-gray-300 rounded-lg shadow-sm cursor-pointer transition-all ${
+                  selectedJob?.id === job.id ? 'bg-[#c5cae8] border-[#475299]' : 'hover:bg-gray-100'
+                }`}
                 onClick={() => setSelectedJob(job)}
               >
-                <h2 className="text-lg font-semibold">{job.title}</h2>
+                <h2 className="text-xl font-semibold text-[#475299]">{job.title}</h2>
                 <p className="text-gray-600">{job.company}</p>
                 <p className="text-sm text-gray-500">{job.type}</p>
               </div>
@@ -79,13 +74,17 @@ const JobBoard: FC = () => {
           )}
         </div>
 
+        {/* Job Details */}
         <div className="job-details w-1/2 pl-4 border-l border-gray-200 overflow-auto" style={{ maxHeight: '600px' }}>
           {selectedJob ? (
-            <div>
-              <h2 className="text-xl font-bold">{selectedJob.title}</h2>
-              <p className="text-gray-600 mb-2">{selectedJob.company}</p>
-              <p className="mb-2">{selectedJob.description}</p>
-              <p className="font-bold">Hourly Pay: ${selectedJob.hourlyPay}</p>
+            <div className="p-4">
+              <h2 className="text-2xl font-bold text-[#475299] mb-2">{selectedJob.title}</h2>
+              <p className="text-gray-600 mb-4">{selectedJob.company}</p>
+              <p className="mb-4 text-lg">{selectedJob.description}</p>
+              <p className="font-bold text-xl text-[#475299]">Hourly Pay: ${selectedJob.hourlyPay}</p>
+              <button className="mt-4 bg-[#475299] text-white px-4 py-2 rounded-full shadow hover:bg-[#3b4b8e] transition-all">
+                Apply Now
+              </button>
             </div>
           ) : (
             <p>Select a job to see details.</p>
