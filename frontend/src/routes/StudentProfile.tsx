@@ -156,61 +156,61 @@ const StudentProfile: FC = () => {
                 </div>
               </div>
             )}
-
-            {/* Looking For Section */}
-            <div className="mt-6">
-              <h3 className="text-lg font-bold">Looking For</h3>
-              <div className="border p-4 rounded shadow-md">
-                <p className="whitespace-normal">{jobPreferences.length > 0 ? jobPreferences.join(', ') : 'No preferences set.'}</p>
-              </div>
-              <button
-                onClick={() => setIsLookingForModalOpen(true)}
-                className="mt-4 bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a]"
-              >
-                Edit
-              </button>
-
-              {/* Modal for Job Preferences */}
-              {isLookingForModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="bg-white p-6 rounded shadow-md">
-                    <h4 className="text-lg font-bold mb-2">Select Job Preferences</h4>
-                    <div className="flex flex-col">
-                      {['Intern', 'Full-time', 'Part-time'].map(preference => (
-                        <label key={preference} className="flex items-center mb-2">
-                          <input
-                            type="checkbox"
-                            checked={jobPreferences.includes(preference)}
-                            onChange={() => toggleJobPreference(preference)}
-                            className="mr-2"
-                          />
-                          {preference}
-                        </label>
-                      ))}
-                    </div>
-                    <div className="flex justify-end mt-4">
-                      <button
-                        onClick={() => setIsLookingForModalOpen(false)}
-                        className="mr-2 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={handleSaveJobPreferences}
-                        className="bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a]"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
         ) : (
           <div>
             <h3 className="text-lg font-bold">Jobs</h3>
             <p>This section contains job listings or relevant information.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Looking For Section */}
+      <div className="mt-6 w-full p-4">
+        <h3 className="text-lg font-bold">Looking For</h3>
+        <div className="border p-4 rounded shadow-md">
+          <p className="whitespace-normal">{jobPreferences.length > 0 ? jobPreferences.join(', ') : 'No preferences set.'}</p>
+        </div>
+        <button
+          onClick={() => setIsLookingForModalOpen(true)}
+          className="mt-4 bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a]"
+        >
+          Edit
+        </button>
+
+        {/* Modal for Job Preferences */}
+        {isLookingForModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-md">
+              <h4 className="text-lg font-bold mb-2">Select Job Preferences</h4>
+              <div className="flex flex-col">
+                {['Intern', 'Full-time', 'Part-time'].map(preference => (
+                  <label key={preference} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      checked={jobPreferences.includes(preference)}
+                      onChange={() => toggleJobPreference(preference)}
+                      className="mr-2"
+                    />
+                    {preference}
+                  </label>
+                ))}
+              </div>
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={() => setIsLookingForModalOpen(false)}
+                  className="mr-2 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveJobPreferences}
+                  className="bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a]"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
