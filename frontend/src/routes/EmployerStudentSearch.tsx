@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import EmployerNavBar from "../components/EmployerNavBar";
+import { useNavigate } from "react-router-dom"; // Import useNavigate at the top
 
 const EmployerStudentSearchPage: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,6 +19,12 @@ const EmployerStudentSearchPage: FC = () => {
     workPreference: false,
     technicalSkills: false, // Dropdown state for technical skills
   });
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  const handleMessageClick = (otherUserId: string) => {
+    navigate(`/direct-message/${otherUserId}`); // Replace with the correct path and user ID
+  };
 
   const jobSeekers = [
     {
@@ -312,11 +319,10 @@ const EmployerStudentSearchPage: FC = () => {
               filteredJobSeekers.map((jobSeeker) => (
                 <div
                   key={jobSeeker.id}
-                  className={`job-listing p-4 border border-gray-300 rounded-lg shadow-sm cursor-pointer transition-all ${
-                    selectedJobSeeker?.id === jobSeeker.id
-                      ? "bg-[#ffeb99] border-[#FEC10E]"
-                      : "hover:bg-gray-100"
-                  }`}
+                  className={`job-listing p-4 border border-gray-300 rounded-lg shadow-sm cursor-pointer transition-all ${selectedJobSeeker?.id === jobSeeker.id
+                    ? "bg-[#ffeb99] border-[#FEC10E]"
+                    : "hover:bg-gray-100"
+                    }`}
                   onClick={() => setSelectedJobSeeker(jobSeeker)}
                 >
                   <img
@@ -374,7 +380,7 @@ const EmployerStudentSearchPage: FC = () => {
                 <p className="font-bold text-xl text-[#FEC10E]">
                   Job Type: {selectedJobSeeker.jobType}
                 </p>
-                <button className="mt-4 bg-[#FEC10E] text-white px-4 py-2 rounded-full shadow hover:bg-[#e0a90c] transition-all">
+                <button className="mt-4 bg-[#FEC10E] text-white px-4 py-2 rounded-full shadow hover:bg-[#e0a90c] transition-all" onClick={() => handleMessageClick(selectedJobSeeker.username)}>
                   Message
                 </button>
               </div>
