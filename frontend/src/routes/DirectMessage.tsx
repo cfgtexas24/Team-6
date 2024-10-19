@@ -6,11 +6,12 @@ import {
   Button,
   Card,
   CardContent,
+  Chip,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
-import { getToken, getUserId } from "../util/authentication";
+import { getToken, getUserId, getUserRole } from "../util/authentication";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { io } from "socket.io-client";
 
@@ -31,6 +32,7 @@ const DirectMessage: FC = () => {
   const [currentMessage, setCurrentMessage] = useState<string>("");
 
   const userId = getUserId();
+  const role = getUserRole()?.toUpperCase();
 
   useEffect(() => {
     function onConnect() {
@@ -78,8 +80,10 @@ const DirectMessage: FC = () => {
           <Card className="my-2" key={msg.message + msg.timestamp}>
             <CardContent>
               <Typography variant="caption">
-                {msg.username} ({new Date(msg.timestamp).toLocaleDateString()}{" "}
-                {new Date(msg.timestamp).toLocaleTimeString()})
+                {msg.username}
+                {new Date(msg.timestamp).toLocaleDateString()}{" "}
+                {new Date(msg.timestamp).toLocaleTimeString()}
+                {role && <Chip className="mx-2" label={role} />}
               </Typography>
               <Typography variant="body1">{msg.message}</Typography>
             </CardContent>

@@ -23,6 +23,14 @@ export function getUserId() {
   return (decoded.sub as { username: string }).username;
 }
 
+export function getUserRole() {
+  const token = getToken();
+  if (!token) return null;
+  const decoded = jwtDecode(token);
+  if (!decoded.sub || typeof decoded.sub === "string") return null;
+  return (decoded.sub as { role: string }).role;
+}
+
 export function checkUserAuth(): boolean {
   const token = getToken();
 

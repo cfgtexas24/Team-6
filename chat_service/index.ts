@@ -37,7 +37,11 @@ io.on("connection", (socket) => {
     socket.disconnect(true);
     return;
   }
-  const userId = payload.sub;
+
+  const userId =
+    typeof payload.sub === "string"
+      ? payload.sub
+      : (payload.sub as { username: string }).username;
 
   socket.on("init", (otherUser: string) => {
     // Can't be in a room by yourself
