@@ -7,7 +7,12 @@ export default {
     preflight: false,
   },
   theme: {
-    extend: {},
+    extend: {
+      textColor: {
+        primary: '#FEC10E',
+        secondary: '#475299',
+      },
+    },
   },
   plugins: [],
 };
