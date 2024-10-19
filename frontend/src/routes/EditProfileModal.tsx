@@ -1,6 +1,5 @@
 // EditProfileModal.tsx
 import { FC } from 'react';
-import CreateIcon from '@mui/icons-material/Create';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -26,7 +25,6 @@ interface EditProfileModalProps {
 const EditProfileModal: FC<EditProfileModalProps> = ({
   isOpen,
   onClose,
-  profilePicture,
   onProfilePictureChange,
   bio,
   setBio,
