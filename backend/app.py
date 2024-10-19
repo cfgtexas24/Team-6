@@ -1,15 +1,18 @@
 from flask import Flask, jsonify,request
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
-import sqlite3
 from dotenv import load_dotenv
-load_dotenv()
+from flask_cors import CORS
 import os
+import sqlite3
+load_dotenv()
+
 
 secret = os.getenv("secret")
 load_dotenv()
 
 app= Flask(__name__)
 app.config.from_prefixed_env()
+CORS(app)
 
 
 app.config["JWT_SECRET_KEY"] = secret# Change this!
@@ -21,7 +24,7 @@ def get_conn_database():
     conn.row_factory=sqlite3.Row #fetch data as rows
     return conn
 
-#when logged in you will get jwt token
+#Added login route which returns jwt token
 @app.route('/login', methods=['POST'])
 def login():
     user_name = request.json.get("user_name", None)
@@ -29,7 +32,7 @@ def login():
     if not user_name or not password:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=email)
+    access_token = create_access_token(identity=user_name)
     return jsonify(access_token=access_token)
 
 
