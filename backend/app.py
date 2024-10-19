@@ -128,8 +128,15 @@ def add_employer():
         cursor.close()  # Close the cursor
         conn.close()  # Close the connection
 
-
-
+@app.route('/alumni', methods=['GET'])
+def get_alumni():
+    conn, cursor = get_conn_database()
+    cursor.execute('SELECT username FROM Users WHERE role = \'alumni\'')
+    users = cursor.fetchall()
+    flat_usernames = [i for row in users for i in row]
+    cursor.close()
+    conn.close()
+    return jsonify(flat_usernames)
 
 #route to add new post
 @app.route('/post', methods=['POST'])

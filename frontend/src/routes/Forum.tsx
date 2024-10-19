@@ -15,6 +15,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useQuery } from "@tanstack/react-query";
 import MessageIcon from "@mui/icons-material/Message";
+import UserNavBar from "../components/UserNavBar";
 
 enum Category {
   SupportGroup = "Support Group",
@@ -125,22 +126,25 @@ const Forum: FC = () => {
   );
 
   return (
-    <Box className="flex flex-row">
-      <Box>
-        <List disablePadding>
-          {Object.values(Category).map((cat) => (
-            <ListItemButton
-              key={cat}
-              onClick={() => navigate(`/community-forums/${cat}`)}
-              divider={true}
-            >
-              <ListItemText primary={cat} />
-            </ListItemButton>
-          ))}
-        </List>
+    <>
+      <UserNavBar />
+      <Box className="flex flex-row">
+        <Box>
+          <List disablePadding>
+            {Object.values(Category).map((cat) => (
+              <ListItemButton
+                key={cat}
+                onClick={() => navigate(`/community-forums/${cat}`)}
+                divider={true}
+              >
+                <ListItemText primary={cat} />
+              </ListItemButton>
+            ))}
+          </List>
+        </Box>
+        <Box className="flex-1 p-4">{body}</Box>
       </Box>
-      <Box className="flex-1 p-4">{body}</Box>
-    </Box>
+    </>
   );
 };
 

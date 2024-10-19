@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FC, FormEventHandler, useState } from "react";
 import { login } from "../util/authentication";
 import { useNavigate } from "react-router-dom";
+import LandingNavBar from "../components/LandingNavBar";
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const Login: FC = () => {
 
   return (
     <>
+      <LandingNavBar />
       <form onSubmit={handleSubmit}>
         <Container maxWidth="md">
           <Stack gap="1rem">
