@@ -7,8 +7,6 @@ import sqlite3
 load_dotenv()
 
 
-
-
 secret = os.getenv("secret")
 load_dotenv()
 
@@ -26,7 +24,7 @@ def get_conn_database():
     conn.row_factory=sqlite3.Row #fetch data as rows
     return conn
 
-#when logged in you will get jwt token
+#Added login route which returns jwt token
 @app.route('/login', methods=['POST'])
 def login():
     user_name = request.json.get("user_name", None)
@@ -34,7 +32,7 @@ def login():
     if not user_name or not password:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=email)
+    access_token = create_access_token(identity=user_name)
     return jsonify(access_token=access_token)
 
 
