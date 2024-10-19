@@ -63,12 +63,32 @@ const Landing = () => {
     }
   };
 
-  // Educational section content helper variable
+  // Educational section content helper variables
   const educationContent = [
-    "All Ages",
-    "Grow Skills, Earn Certificates",
-    "Apply with Confidence",
-    "Seek Stability",
+    {
+      emoji: "👶",
+      title: "All Ages",
+      description:
+        "No matter how young or old you are, there's always a place to start. We welcome everyone to learn and grow.",
+    },
+    {
+      emoji: "📜",
+      title: "Grow Skills, Earn Certificates",
+      description:
+        "With our educational resources, you'll acquire skills that lead to certificates, making you stand out in any job market.",
+    },
+    {
+      emoji: "💼",
+      title: "Apply with Confidence",
+      description:
+        "Prepare your resume, build confidence, and take your shot at that dream job with the tools we provide.",
+    },
+    {
+      emoji: "🏠",
+      title: "Seek Stability",
+      description:
+        "Stability is key. We help you find roles that provide long-term stability and growth in your career.",
+    },
   ];
 
   return (
@@ -137,7 +157,9 @@ const Landing = () => {
             xs={12}
             sm={4}
             ref={aboutRef2}
-            className={`${aboutInView2 ? "animate-floatUp delay-200" : "opacity-0"}`}
+            className={`${
+              aboutInView2 ? "animate-floatUp delay-200" : "opacity-0"
+            }`}
           >
             <div className="flex flex-col items-center">
               <Avatar className="w-20 h-20 bg-yellow-500">🎓</Avatar>
@@ -156,7 +178,9 @@ const Landing = () => {
             xs={12}
             sm={4}
             ref={aboutRef3}
-            className={`${aboutInView3 ? "animate-floatUp delay-400" : "opacity-0"}`}
+            className={`${
+              aboutInView3 ? "animate-floatUp delay-400" : "opacity-0"
+            }`}
           >
             <div className="flex flex-col items-center">
               <Avatar className="w-20 h-20 bg-yellow-500">💼</Avatar>
@@ -171,6 +195,7 @@ const Landing = () => {
         </Grid>
       </div>
 
+      {/* Careers Section */}
       <div id="careersSection" className="py-16 bg-gray-100">
         <Typography variant="h4" className="text-center mb-8">
           Job Opportunities
@@ -251,17 +276,67 @@ const Landing = () => {
         style={{ overflowY: "scroll", scrollSnapType: "y mandatory" }}
       >
         <div className="text-center" style={{ height: "300vh" }}>
-          <div
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
             style={{
               position: "sticky",
               top: "50%",
               transform: "translateY(-50%)",
+              height: "80vh",
             }}
           >
-            <Typography variant="h4">
-              {educationContent[currentStep]}
-            </Typography>
-          </div>
+            {/* Left Column (Subtopic Title) */}
+            <Grid item xs={12} md={6}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                style={{ height: "100%" }}
+              >
+                <Typography
+                  variant="h3"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "3rem",
+                    color: "#475299",
+                  }}
+                >
+                  {educationContent[currentStep].title}
+                </Typography>
+              </Box>
+            </Grid>
+
+            {/* Right Column (Emoji and Description) */}
+            <Grid item xs={12} md={6}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                style={{ height: "100%" }}
+              >
+                <Typography variant="h1" style={{ fontSize: "5rem" }}>
+                  {educationContent[currentStep].emoji}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{
+                    marginTop: "1rem",
+                    fontSize: "1.5rem",
+                    padding: "0 20px",
+                    lineHeight: "2rem",
+                  }}
+                >
+                  {educationContent[currentStep].description}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
         </div>
       </div>
 
@@ -290,7 +365,7 @@ const Landing = () => {
                 <div className="flex items-center">
                   <Avatar src={stockOldManPhoto} className="mr-4" />
                   <Typography variant="body1">
-                    "The resources available here helped me rehabiliate after
+                    "The resources available here helped me rehabilitate after
                     serving my country." - John, 58
                   </Typography>
                 </div>
