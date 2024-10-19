@@ -5,6 +5,8 @@ import Landing from "./routes/Landing";
 import SignUp from "./routes/SignUp";
 import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
+import Home from "./routes/Home";
+import TrackApplications from "./routes/TrackApplications.tsx";
 import JobBoard from "./routes/JobBoard.tsx";
 import CreateJobs from "./routes/CreateJobs.tsx";
 import LearningLibrary from "./routes/LearningLibrary.tsx";
@@ -20,6 +22,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import EmployerProfilePage from "./routes/EmployerProfile";
+import EmployerStudentSearchPage from "./routes/EmployerStudentSearch";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
@@ -58,7 +62,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/jobs",
-        element: <JobBoard />, // Use JobBoard from main
+        element: <JobBoard />,
       },
       {
         path: "/direct-message/:otherUser",
@@ -72,27 +76,23 @@ const router = createBrowserRouter([
         path: "/resume-review",
         element: <ResumeReview />,
       },
+      {
+        path: "/employer-profile",
+        element: <EmployerProfilePage />,
+      },
+      {
+        path: "/employer-student-search",
+        element: <EmployerStudentSearchPage />,
+      },
     ],
+  },
+  {
+    path: "/track-applications",
+    element: <TrackApplications />,
   },
   {
     path: "/signup",
     element: <SignUp />,
-  },
-  {
-    path: "/jobs",
-    element: <JobBoard />,
-  },
-  {
-    path: "/create-a-job",
-    element: <CreateJobs />,
-  },
-  {
-    path: "/jobs",
-    element: <JobBoard />,
-  },
-  {
-    path: "/create-a-job",
-    element: <CreateJobs />,
   },
   {
     path: "/signup-employer",
@@ -101,6 +101,10 @@ const router = createBrowserRouter([
   {
     path: "/home-employer",
     element: <EmployerHome />,
+  },
+  {
+    path: "/create-a-job",
+    element: <CreateJobs />,
   },
   {
     path: "/learning-library",
@@ -115,5 +119,5 @@ createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </StyledEngineProvider>
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 );
