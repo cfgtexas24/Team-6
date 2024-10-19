@@ -86,5 +86,28 @@ def add_employer():
 
     return jsonify({'message':'User added sucessfully!'}),201
 
+
+
+#route to add new post 
+@app.route('/Post', methods=['POST'])
+def add_post():
+    data=request.get_json()
+    title=data['title']
+    content=data['content']
+    user_name=data['username']
+    created_at=data['created_at']
+
+
+    if not title or not content or not user_name or not created_at:
+        return(jsonify({'message':'Need to provide the following information'}),400)
+
+    conn=get_conn_database()
+    conn.execute('INSERT INTO Employers (email) VALUES (?,?,?,?)', ( title, content, user_name,created_at))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message':'Post added sucessfully!'}),201
+
+
 if __name__ == '__main__':
     app.run(debug=True)
