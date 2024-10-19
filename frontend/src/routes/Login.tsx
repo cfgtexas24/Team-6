@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-  Typography,
-  Box,
-  Alert,
-  Container,
-  Stack,
-} from "@mui/material";
+import { Button, TextField, Typography, Box, Alert } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { login } from "../util/authentication";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +30,10 @@ const Login: React.FC = () => {
         navigate("/");
       }
     });
+  };
+
+  const handleForgot = (type: string) => {
+    alert(`An email has been sent to recover your ${type}.`);
   };
 
   return (
@@ -106,13 +102,38 @@ const Login: React.FC = () => {
           </Button>
         </form>
 
+        {/* Forgot Buttons */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            mt: 2,
+            mb: 2,
+          }}
+        >
+          <Button
+            color="primary"
+            sx={{ textTransform: "none" }}
+            onClick={() => handleForgot("username")}
+          >
+            Forgot my username
+          </Button>
+          <Button
+            color="primary"
+            sx={{ textTransform: "none" }}
+            onClick={() => handleForgot("password")}
+          >
+            Forgot my password
+          </Button>
+        </Box>
+
         {/* Links */}
         <div className="text-center">
           <Typography variant="body2" className="mb-2">
             Don't have an account?{" "}
             <a
               href="#"
-              onClick={() => navigate("/signup")} // Navigate to /signup
+              onClick={() => navigate("/signup")}
               className="text-[#FEC10E]"
             >
               Sign up here
@@ -122,7 +143,7 @@ const Login: React.FC = () => {
             Are you an employer?{" "}
             <a
               href="#"
-              onClick={() => navigate("/signup-employer")} // Navigate to /signup-employer
+              onClick={() => navigate("/signup-employer")}
               className="text-[#FEC10E]"
             >
               Register here

@@ -1,3 +1,12 @@
-export {};
+import React from "react";
+import EmployerNavBar from "../components/EmployerNavBar";
 
-// Home page for the employer
+const EmployerHome: React.FC = () => {
+  return (
+    <>
+      <EmployerNavBar></EmployerNavBar>
+    </>
+  );
+};
+
+export default EmployerHome;

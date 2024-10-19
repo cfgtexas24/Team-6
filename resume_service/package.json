@@ -1,0 +1,23 @@
+{
+  "name": "resume_service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
+    "@xenova/transformers": "^2.17.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "llamaindex": "^0.7.0",
+    "multer": "^1.4.5-lts.1",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}

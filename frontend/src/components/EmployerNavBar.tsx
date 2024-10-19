@@ -58,8 +58,8 @@ const EmployerNavBar = () => {
   // Menu items for the avatar dropdown
   const profileMenuItems = [
     { label: "Profile", to: "/profile", icon: <AccountCircleIcon /> },
-    { label: "Dashboard", to: "/dashboard", icon: <DashboardIcon /> },
-    { label: "Logout", to: "/logout", icon: <LogoutIcon /> },
+    { label: "Dashboard", to: "/home-employer", icon: <DashboardIcon /> },
+    { label: "Logout", to: "/", icon: <LogoutIcon /> },
   ];
 
   return (
