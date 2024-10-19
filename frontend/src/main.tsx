@@ -84,11 +84,11 @@ const router = createBrowserRouter([
         path: "/employer-student-search",
         element: <EmployerStudentSearchPage />,
       },
+      {
+        path: "/track-applications",
+        element: <TrackApplications />,
+      },
     ],
-  },
-  {
-    path: "/track-applications",
-    element: <TrackApplications />,
   },
   {
     path: "/signup",
