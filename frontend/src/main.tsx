@@ -7,6 +7,7 @@ import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
 import JobBoard from "./routes/JobBoard.tsx";
 import CreateJobs from "./routes/CreateJobs.tsx";
+import LearningLibrary from "./routes/LearningLibrary.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -23,6 +24,7 @@ import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
 import ResumeReview from "./routes/ResumeReview.tsx";
+import EmployerHome from "./routes/EmployerHome.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +34,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Landing />, // Use Landing from fe-sign-up-screens
+        element: <Landing />,
       },
       {
         path: "/community-forums",
@@ -74,7 +76,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <SignUp />, // Use SignUp from fe-sign-up-screens
+    element: <SignUp />,
   },
   {
     path: "/jobs",
@@ -82,11 +84,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/create-a-job",
-    element: <CreateJobs />
+    element: <CreateJobs />,
+  },
+  {
+    path: "/jobs",
+    element: <JobBoard />,
+  },
+  {
+    path: "/create-a-job",
+    element: <CreateJobs />,
   },
   {
     path: "/signup-employer",
-    element: <EmployerSignUp />, // Use EmployerSignUp from fe-sign-up-screens
+    element: <EmployerSignUp />,
+  },
+  {
+    path: "/home-employer",
+    element: <EmployerHome />,
+  },
+  {
+    path: "/learning-library",
+    element: <LearningLibrary />,
   },
 ]);
 

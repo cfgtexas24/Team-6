@@ -10,6 +10,8 @@ import {
   ListItemButton,
   ListItemText,
   Typography,
+  Paper,
+  CircularProgress,
 } from "@mui/material";
 import { FC, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -76,18 +78,24 @@ const Post: FC<{
   openMessage: (userId: string) => void;
 }> = ({ post, category, openMessage }) => {
   return (
-    <Card>
+    <Card sx={{ mb: 2, borderRadius: "12px", boxShadow: 1 }}>
       <CardContent>
         <Link
           to={`/community-forums/${category}/${post.id}`}
-          className="no-underline hover:underline text-black"
+          className="no-underline hover:underline"
+          style={{ color: "#333" }}
         >
-          <Typography variant="h4">{post.title}</Typography>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            {post.title}
+          </Typography>
         </Link>
-        <Typography className="flex flex-row items-center" variant="h6">
-          <span>{post.username}</span>
-          <IconButton onClick={() => openMessage(post.username)}>
-            <MessageIcon />
+        <Typography
+          variant="subtitle1"
+          sx={{ display: "flex", alignItems: "center", color: "#666" }}
+        >
+          {post.username}
+          <IconButton onClick={() => openMessage(post.username)} sx={{ ml: 1 }}>
+            <MessageIcon fontSize="small" />
           </IconButton>
         </Typography>
       </CardContent>
@@ -109,26 +117,36 @@ const Forum: FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   if (isLoading || !posts) {
-    return <LinearProgress />;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   const openedPost = posts[category].find((p) => p.id === params.post);
 
   const body = openedPost ? (
-    // A single thread is open
     <>
-      <Link to={`/community-forums/${category}`}>
-        <IconButton>
+      <Box sx={{ mb: 2 }}>
+        <IconButton onClick={() => navigate(`/community-forums/${category}`)}>
           <ArrowBackIcon />
         </IconButton>
-      </Link>
+      </Box>
       <Post
         category={category}
         post={openedPost}
         openMessage={(id) => navigate(`/direct-message/${id}`)}
       />
-      <Divider />
-      {(openedPost.replies ?? []).map((p) => (
+      <Divider sx={{ my: 2 }} />
+      {openedPost.replies?.map((p) => (
         <Post
           post={p}
           category={category}
@@ -137,7 +155,6 @@ const Forum: FC = () => {
       ))}
     </>
   ) : (
-    // List all of the threads
     posts[category].map((post) => (
       <Post
         post={post}
@@ -157,21 +174,42 @@ const Forum: FC = () => {
           setDialogOpen(false);
         }}
       />
-      <Box className="flex flex-row">
-        <Box>
+      <Box sx={{ display: "flex", flexDirection: "row", p: 3 }}>
+        {/* Category Sidebar */}
+        <Paper
+          sx={{
+            width: "240px",
+            borderRadius: "12px",
+            p: 2,
+            mr: 4,
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+            Categories
+          </Typography>
           <List disablePadding>
             {Object.values(ForumCategory).map((cat) => (
               <ListItemButton
                 key={cat}
                 onClick={() => navigate(`/community-forums/${cat}`)}
-                divider={true}
+                sx={{
+                  borderRadius: "8px",
+                  mb: 1,
+                  "&:hover": {
+                    backgroundColor: "#E0A90C",
+                    color: "#fff",
+                  },
+                }}
               >
                 <ListItemText primary={cat} />
               </ListItemButton>
             ))}
           </List>
-        </Box>
-        <Box className="flex-1 p-4">{body}</Box>
+        </Paper>
+
+        {/* Main Content Area */}
+        <Box sx={{ flex: 1, borderRadius: "12px", p: 2 }}>{body}</Box>
       </Box>
       <Fab
         aria-label="add"
