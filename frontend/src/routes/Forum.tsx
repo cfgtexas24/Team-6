@@ -5,13 +5,16 @@ import {
   Divider,
   Fab,
   IconButton,
-  LinearProgress,
   List,
   ListItemButton,
   ListItemText,
   Typography,
   Paper,
   CircularProgress,
+  FormControl,
+  TextField,
+  Button,
+  LinearProgress,
 } from "@mui/material";
 import { FC, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -23,38 +26,29 @@ import AddIcon from "@mui/icons-material/Add";
 import ForumPostDialog from "../components/ForumPostDialog";
 import { ForumCategory } from "../util/types";
 import { queryClient } from "../util/queryclient";
+import { getUserId } from "../util/authentication";
 
 type Post = {
   id: string;
   username: string;
   title: string;
-  replies?: Post[];
+  created_at: string;
+  content: string;
+};
+
+type Comment = {
+  comment: string;
+  created_at: string; // BUG: Actually is username
+  id: number;
+  post_id: string; // BUG: Is actually timestamp
+  username: number; // BUG: Is actually post id
 };
 
 async function getPosts() {
-  const dummyData: Record<ForumCategory, Post[]> = {
-    [ForumCategory.SupportGroup]: [
-      {
-        username: "Test user",
-        title: "group support yayay",
-        id: "4",
-        replies: [{ username: "Test replier", title: "Hello", id: "whatever" }],
-      },
-    ],
-    [ForumCategory.Course]: [
-      { username: "Test user", title: "course", id: "1" },
-    ],
-    [ForumCategory.Housing]: [
-      { username: "Test user", title: "alumni", id: "2" },
-    ],
-    [ForumCategory.Disability]: [
-      { username: "Test user", title: "alumni", id: "2" },
-    ],
-    [ForumCategory.General]: [
-      { username: "Test user", title: "general channel", id: "3" },
-    ],
-  };
-  return dummyData;
+  const url = new URL("/post", import.meta.env.VITE_API_ADDRESS);
+  const res = await fetch(url);
+  const data = await res.json();
+  return data as Post[];
 }
 
 async function newPost(json: Record<string, unknown>) {
@@ -70,6 +64,13 @@ async function newPost(json: Record<string, unknown>) {
   if (!res.ok) throw new Error(res.statusText);
   queryClient.invalidateQueries({ queryKey: ["posts"] });
   return await res.json();
+}
+
+async function getComments() {
+  const url = new URL("/comments", import.meta.env.VITE_API_ADDRESS);
+  const res = await fetch(url);
+  const data = await res.json();
+  return data as Comment[];
 }
 
 const Post: FC<{
@@ -98,19 +99,87 @@ const Post: FC<{
             <MessageIcon fontSize="small" />
           </IconButton>
         </Typography>
+        <Typography variant="caption">{post.created_at}</Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+async function newComment(json: Comment) {
+  const url = new URL("/comments", import.meta.env.VITE_API_ADDRESS);
+  const res = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(json),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) throw new Error(res.statusText);
+  queryClient.invalidateQueries({ queryKey: ["comments"] });
+  return await res.json();
+}
+
+const CommentInput: FC<{ postId: number }> = ({ postId }) => {
+  const [comment, setComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <Card sx={{ mb: 2, borderRadius: "12px", boxShadow: 1 }}>
+      <CardContent>
+        {isLoading && <LinearProgress />}
+        <Typography variant="h6" className="mb-2">
+          New Comment
+        </Typography>
+        <FormControl fullWidth>
+          <TextField
+            name="comment"
+            label="Comment"
+            disabled={isLoading}
+            fullWidth
+            value={comment}
+            onChange={(ev) => setComment(ev.target.value)}
+          />
+        </FormControl>
+        <Button
+          className="mt-4"
+          disabled={isLoading}
+          variant="outlined"
+          onClick={() => {
+            setIsLoading(true);
+            newComment({
+              comment,
+              created_at: getUserId()!,
+              id: Date.now(),
+              post_id: new Date().toUTCString(),
+              username: postId,
+            }).finally(() => {
+              setIsLoading(false);
+            });
+          }}
+        >
+          Post
+        </Button>
       </CardContent>
     </Card>
   );
 };
 
 const Forum: FC = () => {
-  const { isLoading, data: posts } = useQuery({
+  const { isLoading: arePostsLoading, data: posts } = useQuery({
     queryKey: ["posts"],
     queryFn: getPosts,
   });
 
+  const { isLoading: areCommentsLoading, data: comments } = useQuery({
+    queryKey: ["comments"],
+    queryFn: getComments,
+  });
+
+  const isLoading = arePostsLoading || areCommentsLoading;
+
   const params = useParams<{ category: ForumCategory; post: string }>();
-  const category = params.category ?? ForumCategory.SupportGroup;
+  const category = params.category ?? ForumCategory.All;
 
   const navigate = useNavigate();
 
@@ -131,7 +200,16 @@ const Forum: FC = () => {
     );
   }
 
-  const openedPost = posts[category].find((p) => p.id === params.post);
+  // This is stupid and bad but I am tired
+  const filteredPosts = posts.filter(
+    (p) =>
+      category === ForumCategory.All ||
+      (p.title + p.content).toLowerCase().includes(category.toLowerCase()),
+  );
+  const openedPost = posts.find((p) => p.id.toString() === params.post);
+  const openedPostComments = (comments ?? []).filter(
+    (c) => c.username.toString() === openedPost?.id.toString(),
+  );
 
   const body = openedPost ? (
     <>
@@ -146,17 +224,23 @@ const Forum: FC = () => {
         openMessage={(id) => navigate(`/direct-message/${id}`)}
       />
       <Divider sx={{ my: 2 }} />
-      {openedPost.replies?.map((p) => (
-        <Post
-          post={p}
-          category={category}
-          openMessage={(id) => navigate(`/direct-message/${id}`)}
-        />
+      {openedPostComments.map((comment) => (
+        <Card
+          key={comment.id}
+          sx={{ mb: 2, borderRadius: "12px", boxShadow: 1 }}
+        >
+          <CardContent>
+            <Typography variant="body1">{comment.comment}</Typography>
+            <Typography variant="caption">{comment.created_at}</Typography>
+          </CardContent>
+        </Card>
       ))}
+      <CommentInput postId={parseInt(openedPost.id)} />
     </>
   ) : (
-    posts[category].map((post) => (
+    filteredPosts.map((post) => (
       <Post
+        key={post.id}
         post={post}
         category={category}
         openMessage={(id) => navigate(`/direct-message/${id}`)}

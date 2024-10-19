@@ -1,19 +1,10 @@
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import {
-  DialogActions,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Button,
-} from "@mui/material";
-import { ForumCategory } from "../util/types";
+import { DialogActions, FormControl, TextField, Button } from "@mui/material";
 import { getUserId } from "../util/authentication";
 
 const ForumPostDialog: FC<{
@@ -22,10 +13,6 @@ const ForumPostDialog: FC<{
 }> = ({ open, onClose }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
-  const [selectedCategory, setSelectedCategory] = useState<ForumCategory>(
-    ForumCategory.SupportGroup,
-  );
 
   return (
     <>
@@ -53,23 +40,7 @@ const ForumPostDialog: FC<{
         <DialogContent>
           <br />
           <FormControl fullWidth className="p-4 m-4">
-            <InputLabel id="titleLabel">Category Title</InputLabel>
-            <Select
-              name="title"
-              labelId="titleLabel"
-              fullWidth
-              label="Category Title"
-              value={selectedCategory}
-              onChange={(ev) =>
-                setSelectedCategory(ev.target.value as ForumCategory)
-              }
-            >
-              {Object.entries(ForumCategory).map(([key, value]) => (
-                <MenuItem key={key} value={value}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
+            <TextField name="title" label="Title" fullWidth />
           </FormControl>
           <FormControl fullWidth className="m-4">
             <TextField

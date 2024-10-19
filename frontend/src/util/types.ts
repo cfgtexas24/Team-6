@@ -1,4 +1,5 @@
 export enum ForumCategory {
+  All = "All",
   SupportGroup = "Support Group",
   Course = "Courses",
   Disability = "Disability Assistance",
