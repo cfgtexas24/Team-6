@@ -1,12 +1,32 @@
 import React from "react";
 import { AppBar, Toolbar, Tabs, Tab, Button, Box } from "@mui/material";
 import { Link as ScrollLink } from "react-scroll";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import REE from "../assets/REE.png";
 
-const LandingNavbar = () => {
+const LandingNavBar = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // Helper functions to handle navigation
+  const handleSignUp = () => {
+    navigate("/signup"); // TO: SignUp route
+  };
+
+  const handleLogin = () => {
+    navigate("/login"); // TO: Login route
+  };
+
   return (
-    <AppBar position="sticky" color="transparent" elevation={0}>
+    <AppBar
+      position="sticky"
+      color="transparent"
+      elevation={0}
+      sx={{
+        backdropFilter: "blur(8px)", // Apply blur effect
+        backgroundColor: "rgba(255, 255, 255, 0.8)", // Light background with transparency
+        transition: "background-color 0.3s ease", // Smooth transition for background color
+      }}
+    >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
         <Box component="div" sx={{ display: "flex", alignItems: "center" }}>
@@ -47,8 +67,7 @@ const LandingNavbar = () => {
         {/* Login and Sign Up Buttons */}
         <Box>
           <Button
-            component={Link}
-            to="/login"
+            onClick={handleLogin}
             variant="outlined"
             sx={{
               color: "#FEC10E", // REE Yellow
@@ -64,8 +83,7 @@ const LandingNavbar = () => {
           </Button>
 
           <Button
-            component={Link}
-            to="/signup"
+            onClick={handleSignUp}
             variant="contained"
             sx={{
               backgroundColor: "#FEC10E", // REE Yellow
@@ -83,4 +101,4 @@ const LandingNavbar = () => {
   );
 };
 
-export default LandingNavbar;
+export default LandingNavBar;
