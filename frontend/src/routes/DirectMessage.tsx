@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { chatSocket } from "../util/chat";
 import { ChatMessage } from "../../../chat_service/types";
 import {
   Box,
@@ -11,8 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getUserId } from "../util/authentication";
+import { getToken, getUserId } from "../util/authentication";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { io } from "socket.io-client";
+
+const chatSocket = io(`ws://${import.meta.env.VITE_CHAT_ADDRESS}`, {
+  extraHeaders: {
+    Authorization: `Bearer ${getToken()}`,
+  },
+});
 
 const DirectMessage: FC = () => {
   const { otherUser } = useParams();
