@@ -133,7 +133,7 @@ def add_employer():
 
 @app.route('/post', methods=['POST', 'GET'])
 def add_post():
-
+    
     conn, cursor = get_conn_database()
 
     if not conn:
@@ -141,10 +141,10 @@ def add_post():
 
     if request.method == 'POST':
         data = request.get_json()
-        title = data['title']
-        content = data['content']
-        username = data['username']
-        user_id = data['user_id']
+        title = data.get['title']
+        content = data.get['content']
+        username = data.get['username']
+
         if not title or not content or not username:
             return jsonify({'message': 'Need to provide the following information'}), 400
 
@@ -153,26 +153,26 @@ def add_post():
             user=cursor.fetchone()
             if not user:
                 return jsonify({'message':'user not not found'}),404
-
+            
             user_id=user[0]
             # place into post table
-            insert_query = 'INSERT INTO Post (title, content, username, user_id) VALUES (%s, %s, %s,%s)'
-            cursor.execute(insert_query, (title, content, username,user_id))
+            insert_query = 'INSERT INTO Post (title, content, username) VALUES (%s, %s, %s)'
+            cursor.execute(insert_query, (title, content, user_id))
             conn.commit()
 
             return jsonify({'message': 'Post added successfully!'}), 201
 
         except Exception as e:
-            conn.rollback()
+            conn.rollback()  
             return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
 
         finally:
-            cursor.close()
-            conn.close()
+            cursor.close()  
+            conn.close()  
 
     elif request.method == 'GET':
         try:
-            #get all the data
+            #get all the data 
             cursor.execute('SELECT * FROM Post')
             posts = cursor.fetchall()
 
@@ -180,11 +180,11 @@ def add_post():
             all_posts = []
             for post in posts:
                 all_posts.append({
-                    'id': post[0],
-                    'title': post[1],
-                    'content': post[2],
-                    'username': post[3],
-                    'created_at': post[4]
+                    'id': post[0],         
+                    'title': post[1],      
+                    'content': post[2],    
+                    'username': post[3],   
+                    'created_at': post[4] 
                 })
 
             return jsonify(all_posts), 200
@@ -197,39 +197,72 @@ def add_post():
             conn.close()
 
 
-#route to add new comment
-@app.route('/comments', methods=['POST'])
-def add_comment():
-    data=request.get_json()
-    comment=data['comment']
-    post_id=data['post_id']
-    username=data['username']
-
-
-
-    if not comment or not post_id or not username :
-        return(jsonify({'message':'Need to provide the following information'}),400)
-    conn,cursor=get_conn_database()
+@app.route('/comments', methods=['POST', 'GET'])
+def add_comments():
+    
+    conn, cursor = get_conn_database()
 
     if not conn:
         return jsonify({'message': 'Database connection failed'}), 500
 
+    if request.method == 'POST':
+        data = request.get_json()
+        comment = data.get['commment']
+        post_id = data.get['post_id']
+        username = data.get['username']
+
+        if not comment or not post_id or not username:
+            return jsonify({'message': 'Need to provide the following information'}), 400
+
+        try:
+            cursor.execute('SELECT id FROM Users WHERE username=%s',(username,))
+            user=cursor.fetchone()
+            if not user:
+                return jsonify({'message':'user not not found'}),404
+            
+            user_id=user[0]
+            # place into post table
+            insert_query = 'INSERT INTO Post (title, content, username) VALUES (%s, %s, %s)'
+            cursor.execute(insert_query, (comment, post_id, user_id))
+            conn.commit()
+
+            return jsonify({'message': 'comment added successfully!'}), 201
+
+        except Exception as e:
+            conn.rollback()  
+            return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
+
+        finally:
+            cursor.close()  
+            conn.close()  
+
+    elif request.method == 'GET':
+        try:
+            #get all the data 
+            cursor.execute('SELECT * FROM comments')
+            posts = cursor.fetchall()
+
+            # place the info into dic
+            all_posts = []
+            for post in posts:
+                all_posts.append({
+                    'id': post[0],         
+                    'comment': post[1],      
+                    'post_id': post[2],    
+                    'username': post[3],   
+                    'created_at': post[4] 
+                })
+
+            return jsonify(all_posts), 200
+
+        except Exception as e:
+            return jsonify({'message': 'Failed to fetch comments', 'error': str(e)}), 500
+
+        finally:
+            cursor.close()
+            conn.close()
 
 
-    try:
-        insert_query='INSERT INTO comments (comment,post_id,username) VALUES (%s,%s,%s)'
-        cursor.execute(insert_query,(comment,post_id,username))
-        conn.commit()
-
-        return jsonify({'message':'comment added sucessfully!'}),201
-
-    except Exception as e:
-        conn.rollback()  # Rollback in case of any error
-        return jsonify({'message': 'Failed to add comment', 'error': str(e)}), 500
-
-    finally:
-        cursor.close()  # Close the cursor
-        conn.close()  # Close the connection
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
