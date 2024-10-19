@@ -85,7 +85,7 @@ const EmployerSignupPage: React.FC = () => {
 
         {/* Step 1: Company Email */}
         {step === 1 && (
-          <>
+          <div className="text-center">
             <Typography variant="h5" className="text-center mb-4">
               Sign Up for ReBirth as an Employer
             </Typography>
@@ -99,6 +99,16 @@ const EmployerSignupPage: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              <Typography variant="body2">
+                Already have an account?{" "}
+                <a
+                  href="#"
+                  onClick={() => navigate("/login")} // Navigate to /login
+                  className="text-[#FEC10E]"
+                >
+                  Sign in here
+                </a>
+              </Typography>
               <Button
                 type="submit"
                 variant="contained"
@@ -116,7 +126,7 @@ const EmployerSignupPage: React.FC = () => {
                 Continue
               </Button>
             </form>
-          </>
+          </div>
         )}
 
         {/* Step 2: Confirmation Code */}
