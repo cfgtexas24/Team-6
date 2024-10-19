@@ -102,11 +102,32 @@ def add_post():
         return(jsonify({'message':'Need to provide the following information'}),400)
 
     conn=get_conn_database()
-    conn.execute('INSERT INTO Employers (email) VALUES (?,?,?,?)', ( title, content, user_name,created_at))
+    conn.execute('INSERT INTO Post (title, content,user_name,created_at) VALUES (?,?,?,?)', ( title, content, user_name,created_at))
     conn.commit()
     conn.close()
 
     return jsonify({'message':'Post added sucessfully!'}),201
+
+#route to add new comment
+@app.route('/comments', methods=['POST'])
+def add_post():
+    data=request.get_json()
+    title=data['title']
+    post_id=data['post_id']
+    username=data['username']
+    created_at=data['created_at']
+
+
+    if not title or not post_id or not username or not created_at:
+        return(jsonify({'message':'Need to provide the following information'}),400)
+
+    conn=get_conn_database()
+    conn.execute('INSERT INTO comments (title,post_id,user_name,created_at) VALUES (?,?,?,?)', ( title, post_id, username,created_at))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message':'comment added sucessfully!'}),201
+
 
 
 
