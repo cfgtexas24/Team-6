@@ -29,12 +29,12 @@ export function checkUserAuth(): boolean {
   return true;
 }
 
-export async function login(user_name: string, password: string) {
+export async function login(username: string, password: string) {
   const url = new URL("/login", import.meta.env.VITE_API_ADDRESS);
   const res = await fetch(url, {
     method: "POST",
     body: JSON.stringify({
-      user_name,
+      username,
       password,
     }),
     headers: {
