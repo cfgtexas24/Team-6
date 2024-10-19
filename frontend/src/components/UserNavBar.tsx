@@ -89,7 +89,22 @@ const UserNavBar = () => {
         </Box>
 
         {/* Navigation Tabs */}
-        <Tabs value={activeTab} onChange={handleTabChange}>
+        <Tabs
+          value={activeTab}
+          onChange={handleTabChange}
+          sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#FEC10E", // Custom color for the tab indicator
+            },
+            "& .MuiTab-root": {
+              color: "#000", // Default color for the tab text
+            },
+            "& .Mui-selected": {
+              color: "#FEC10E", // Custom color for the selected tab
+            },
+          }}
+        >
+          {" "}
           <Tab label="Job Board" component={Link} to="/job-board" />
           <Tab
             label="Education Resources"
