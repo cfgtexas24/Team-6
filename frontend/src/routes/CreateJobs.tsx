@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 // Job interface
 interface Job {
@@ -9,6 +10,7 @@ interface Job {
   description: string;
   hourlyPay: number;
   logo: string;
+  applicationLink: string; // Added application link
 }
 
 const CreateJobs: FC = () => {
@@ -23,6 +25,7 @@ const CreateJobs: FC = () => {
     type: 'intern',
     description: '',
     hourlyPay: 0,
+    applicationLink: '', // Initialize application link
   });
 
   // Filter jobs based on type and search term
@@ -39,7 +42,7 @@ const CreateJobs: FC = () => {
       logo: 'https://via.placeholder.com/40x40.png?text=New', // Placeholder logo
     };
     setJobs([...jobs, newJobEntry]);
-    setNewJob({ title: '', company: '', type: 'intern', description: '', hourlyPay: 0 });
+    setNewJob({ title: '', company: '', type: 'intern', description: '', hourlyPay: 0, applicationLink: '' }); // Reset form
     setIsCreating(false);
   };
 
@@ -50,11 +53,11 @@ const CreateJobs: FC = () => {
 
   return (
     <div className="job-board flex flex-col p-8 bg-white">
-      <h1 className="text-4xl font-bold text-[#475299] mb-6">Jobs</h1>
+      <h1 className="text-4xl font-bold text-[#475299] mb-6">Job Listing Manager</h1>
 
       {/* Search / Filter */}
       <div className="flex mb-6">
-        <div className="relative w-3/4 mr-4">
+        <div className="relative w-1/3 mr-4">
           <input
             type="text"
             placeholder="Search for jobs..."
@@ -65,7 +68,7 @@ const CreateJobs: FC = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 pl-96">
           {['all', 'intern', 'full-time', 'part-time'].map((type) => (
             <button
               key={type}
@@ -115,14 +118,14 @@ const CreateJobs: FC = () => {
                     <p className="text-gray-600">{job.company}</p>
                     <p className="text-sm text-gray-500">{job.type}</p>
                   </div>
-                  <button onClick={() => handleDeleteJob(job.id)} className="text-red-600 ml-auto">
-                    Delete
+                  <button onClick={() => handleDeleteJob(job.id)} className="text-red-600 ml-auto bg-white border-0 rounded-full w-6 h-6 pr-8">
+                    <CancelIcon></CancelIcon>
                   </button>
                 </div>
               </div>
             ))
           ) : (
-            <p>No jobs found.</p>
+            <p>No jobs listed.</p>
           )}
         </div>
 
@@ -146,9 +149,9 @@ const CreateJobs: FC = () => {
               </div>
               <p className="mb-4 text-lg">{selectedJob.description}</p>
               <p className="font-bold text-xl text-[#475299]">Hourly Pay: ${selectedJob.hourlyPay}</p>
-              <button className="mt-4 bg-[#475299] text-white px-4 py-2 rounded-full shadow hover:bg-[#3b4b8e] transition-all">
+              <a href={selectedJob.applicationLink} target="_blank" rel="noopener noreferrer" className="mt-4 bg-[#475299] text-white px-4 py-2 rounded-full shadow hover:bg-[#3b4b8e] transition-all no-underline">
                 Apply Now
-              </button>
+              </a>
             </div>
           ) : (
             <p>Select a job to see details.</p>
@@ -193,6 +196,15 @@ const CreateJobs: FC = () => {
                 type="number"
                 value={newJob.hourlyPay}
                 onChange={(e) => setNewJob({ ...newJob, hourlyPay: parseFloat(e.target.value) })}
+                className="border border-gray-300 rounded p-2 w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-1">Application Link:</label>
+              <input
+                type="url"
+                value={newJob.applicationLink}
+                onChange={(e) => setNewJob({ ...newJob, applicationLink: e.target.value })}
                 className="border border-gray-300 rounded p-2 w-full"
               />
             </div>
