@@ -2,16 +2,25 @@ import { jwtDecode } from "jwt-decode";
 
 const authTokenKey = "auth_token";
 
-function getToken() {
+export function getToken() {
   return window.localStorage.getItem(authTokenKey);
 }
 
-function clearToken() {
+export function clearToken() {
   window.localStorage.removeItem(authTokenKey);
 }
 
-function setToken(value: string) {
+export function setToken(value: string) {
   window.localStorage.setItem(authTokenKey, value);
+}
+
+export function getUserId() {
+  const token = getToken();
+  if (!token) return null;
+  const decoded = jwtDecode(token);
+  if (!decoded.sub) return null;
+  if (typeof decoded.sub === "string") return decoded.sub;
+  return (decoded.sub as { username: string }).username;
 }
 
 export function checkUserAuth(): boolean {

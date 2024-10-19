@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardContent,
+  Divider,
   IconButton,
   LinearProgress,
   List,
@@ -13,6 +14,7 @@ import { FC } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useQuery } from "@tanstack/react-query";
+import MessageIcon from "@mui/icons-material/Message";
 
 enum Category {
   SupportGroup = "Support Group",
@@ -25,12 +27,18 @@ type Post = {
   id: string;
   username: string;
   title: string;
+  replies?: Post[];
 };
 
 async function getPosts() {
   const dummyData: Record<Category, Post[]> = {
     [Category.SupportGroup]: [
-      { username: "Test user", title: "group support yayay", id: "4" },
+      {
+        username: "Test user",
+        title: "group support yayay",
+        id: "4",
+        replies: [{ username: "Test replier", title: "Hello", id: "whatever" }],
+      },
     ],
     [Category.Course]: [{ username: "Test user", title: "course", id: "1" }],
     [Category.Alumni]: [{ username: "Test user", title: "alumni", id: "2" }],
@@ -41,19 +49,28 @@ async function getPosts() {
   return dummyData;
 }
 
-const Post: FC<{ post: Post; category: Category }> = ({ post, category }) => {
+const Post: FC<{
+  post: Post;
+  category: Category;
+  openMessage: (userId: string) => void;
+}> = ({ post, category, openMessage }) => {
   return (
-    <Link
-      to={`/community-forums/${category}/${post.id}`}
-      className="no-underline"
-    >
-      <Card>
-        <CardContent>
+    <Card>
+      <CardContent>
+        <Link
+          to={`/community-forums/${category}/${post.id}`}
+          className="no-underline hover:underline text-black"
+        >
           <Typography variant="h4">{post.title}</Typography>
-          <Typography variant="h6">{post.username}</Typography>
-        </CardContent>
-      </Card>
-    </Link>
+        </Link>
+        <Typography className="flex flex-row items-center" variant="h6">
+          <span>{post.username}</span>
+          <IconButton onClick={() => openMessage(post.username)}>
+            <MessageIcon />
+          </IconButton>
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -65,7 +82,6 @@ const Forum: FC = () => {
 
   const params = useParams<{ category: Category; post: string }>();
   const category = params.category ?? Category.SupportGroup;
-  const post = params.post;
 
   const navigate = useNavigate();
 
@@ -73,7 +89,10 @@ const Forum: FC = () => {
     return <LinearProgress />;
   }
 
-  const body = post ? (
+  const openedPost = posts[category].find((p) => p.id === params.post);
+
+  const body = openedPost ? (
+    // A single thread is open
     <>
       <Link to={`/community-forums/${category}`}>
         <IconButton>
@@ -82,11 +101,27 @@ const Forum: FC = () => {
       </Link>
       <Post
         category={category}
-        post={posts[category].find((p) => p.id === post)!}
+        post={openedPost}
+        openMessage={(id) => navigate(`/direct-message/${id}`)}
       />
+      <Divider />
+      {(openedPost.replies ?? []).map((p) => (
+        <Post
+          post={p}
+          category={category}
+          openMessage={(id) => navigate(`/direct-message/${id}`)}
+        />
+      ))}
     </>
   ) : (
-    posts[category].map((post) => <Post post={post} category={category} />)
+    // List all of the threads
+    posts[category].map((post) => (
+      <Post
+        post={post}
+        category={category}
+        openMessage={(id) => navigate(`/direct-message/${id}`)}
+      />
+    ))
   );
 
   return (

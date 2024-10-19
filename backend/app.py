@@ -74,7 +74,7 @@ def login():
     role, error = get_user_role(username, password)  # Check user credentials
     if error:
         return jsonify({"error": "ERROR"}), 401
-    access_token = create_access_token(identity={'role': role})
+    access_token = create_access_token(identity={'role': role, 'username': username})
     return jsonify(access_token=access_token), 200
 
 

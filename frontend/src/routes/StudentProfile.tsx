@@ -75,12 +75,12 @@ const StudentProfile: FC = () => {
           className="hidden"
         />
 
-        <div>
-          <h2 className="text-xl font-bold mb-2">John Doe</h2>
-          <div className="flex space-x-4">
+        <div className='flex flex-col justify-center align-items center'>
+          <h2 className="text-3xl font-bold">John Doe</h2>
+          <div className="flex space-x-4 mb-5">
             <a
               href="/path/to/resume.pdf" 
-              className="bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a]"
+              className="bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a] no-underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -88,7 +88,7 @@ const StudentProfile: FC = () => {
             </a>
             <a
               href="/path/to/cover-letter.pdf" 
-              className="bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a]"
+              className="bg-[#475299] text-white px-4 py-2 rounded hover:bg-[#38417a] no-underline"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -102,13 +102,13 @@ const StudentProfile: FC = () => {
       <div className="tabs-box bg-white w-full flex justify-between p-4 border-t-2 border-gray-200">
         <button
           onClick={() => setActiveTab('about')}
-          className={`flex-1 text-center py-2 font-bold ${activeTab === 'about' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
+          className={`flex-1 text-center py-2 font-bold border rounded-full mr-2 ${activeTab === 'about' ? 'text-secondary border-2 border-secondary' : 'text-gray-500'}`}
         >
           About
         </button>
         <button
           onClick={() => setActiveTab('jobs')}
-          className={`flex-1 text-center py-2 font-bold ${activeTab === 'jobs' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
+          className={`flex-1 text-center py-2 font-bold border rounded-full ml-2 ${activeTab === 'jobs' ? 'text-secondary border-2 border-secondary' : 'text-gray-500'}`}
         >
           Jobs
         </button>

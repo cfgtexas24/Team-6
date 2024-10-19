@@ -16,6 +16,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Forum from "./routes/Forum";
+import DirectMessage from "./routes/DirectMessage";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/student-profile",
         element: <StudentProfile />,
+      },
+      {
+        path: "/direct-message/:otherUser",
+        element: <DirectMessage />,
       },
     ],
   },
