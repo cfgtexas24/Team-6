@@ -5,7 +5,6 @@ import Landing from "./routes/Landing";
 import SignUp from "./routes/SignUp";
 import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
-import Home from "./routes/Home";
 import JobBoard from "./routes/JobBoard.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
@@ -22,6 +21,7 @@ import "@fontsource/roboto/700.css";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
+import ResumeReview from "./routes/ResumeReview.tsx";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/talk-to-alumni",
         element: <Alumni />,
+      },
+      {
+        path: "/resume-review",
+        element: <ResumeReview />,
       },
     ],
   },
