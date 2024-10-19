@@ -6,6 +6,8 @@ import SignUp from "./routes/SignUp";
 import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
 import Home from "./routes/Home";
+import StudentProfile from "./routes/StudentProfile"
+import TrackApplications from "./routes/TrackApplications.tsx"
 import JobBoard from "./routes/JobBoard.tsx";
 import CreateJobs from "./routes/CreateJobs.tsx";
 import { StyledEngineProvider } from "@mui/material";
@@ -79,6 +81,12 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/student-profile",
+    element: <StudentProfile />,
+  },
+  {
+    path: "/track-applications",
+    element: <TrackApplications />,
     path: "/signup",
     element: <SignUp />, // Use SignUp from fe-sign-up-screens
   },
