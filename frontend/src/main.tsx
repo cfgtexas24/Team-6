@@ -99,6 +99,10 @@ const router = createBrowserRouter([
     element: <EmployerSignUp />,
   },
   {
+    path: "/home",
+    element: <Home />,
+  },
+  {
     path: "/home-employer",
     element: <EmployerHome />,
   },
@@ -119,5 +123,5 @@ createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </StyledEngineProvider>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );
