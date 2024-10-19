@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   IconButton,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,6 +20,7 @@ const chatSocket = io(`ws://${import.meta.env.VITE_CHAT_ADDRESS}`, {
   extraHeaders: {
     Authorization: `Bearer ${getToken()}`,
   },
+  autoConnect: false,
 });
 
 const DirectMessage: FC = () => {
@@ -34,9 +36,12 @@ const DirectMessage: FC = () => {
   const userId = getUserId();
 
   useEffect(() => {
+    if (chatSocket.disconnected) chatSocket.connect();
+
     function onConnect() {
       chatSocket.emit("init", otherUser);
       setIsConnected(true);
+      setMessages([]); // Clear messages since we will get them again
     }
 
     function onDisconnect() {
@@ -77,19 +82,27 @@ const DirectMessage: FC = () => {
       </IconButton>
       <Box className="flex flex-col">
         {messages.map((msg) => (
-          <Card className="my-2" key={msg.message + msg.timestamp}>
+          <Card
+            className="m-2 bg-[#f0f0f0]"
+            key={msg.message + msg.timestamp}
+            elevation={3}
+          >
             <CardContent>
               <Typography variant="caption">
-                {msg.username}
-                {new Date(msg.timestamp).toLocaleDateString()}{" "}
+                {msg.username} {new Date(msg.timestamp).toLocaleDateString()}{" "}
                 {new Date(msg.timestamp).toLocaleTimeString()}
               </Typography>
-              <Typography variant="body1">{msg.message}</Typography>
+              <Typography variant="body1" className="font-semibold">
+                {msg.message}
+              </Typography>
             </CardContent>
           </Card>
         ))}
       </Box>
-      <Box className="flex-row flex items-start p-4 fixed bottom-0 left-0 right-0 bg-white">
+      <Paper
+        className="flex-row flex items-start p-4 fixed bottom-0 left-0 right-0 bg-[#f0f0f0]"
+        elevation={3}
+      >
         <TextField
           className="flex-1"
           label="Message"
@@ -109,7 +122,7 @@ const DirectMessage: FC = () => {
         >
           Send
         </Button>
-      </Box>
+      </Paper>
     </>
   );
 };
