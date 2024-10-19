@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   Divider,
+  Fab,
   IconButton,
   LinearProgress,
   List,
@@ -12,19 +13,16 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useQuery } from "@tanstack/react-query";
 import MessageIcon from "@mui/icons-material/Message";
 import UserNavBar from "../components/UserNavBar";
-
-enum Category {
-  SupportGroup = "Support Group",
-  Course = "Courses",
-  Alumni = "Ask Alumni",
-  General = "General",
-}
+import AddIcon from "@mui/icons-material/Add";
+import ForumPostDialog from "../components/ForumPostDialog";
+import { ForumCategory } from "../util/types";
+import { queryClient } from "../util/queryclient";
 
 type Post = {
   id: string;
@@ -34,8 +32,8 @@ type Post = {
 };
 
 async function getPosts() {
-  const dummyData: Record<Category, Post[]> = {
-    [Category.SupportGroup]: [
+  const dummyData: Record<ForumCategory, Post[]> = {
+    [ForumCategory.SupportGroup]: [
       {
         username: "Test user",
         title: "group support yayay",
@@ -43,18 +41,40 @@ async function getPosts() {
         replies: [{ username: "Test replier", title: "Hello", id: "whatever" }],
       },
     ],
-    [Category.Course]: [{ username: "Test user", title: "course", id: "1" }],
-    [Category.Alumni]: [{ username: "Test user", title: "alumni", id: "2" }],
-    [Category.General]: [
+    [ForumCategory.Course]: [
+      { username: "Test user", title: "course", id: "1" },
+    ],
+    [ForumCategory.Housing]: [
+      { username: "Test user", title: "alumni", id: "2" },
+    ],
+    [ForumCategory.Disability]: [
+      { username: "Test user", title: "alumni", id: "2" },
+    ],
+    [ForumCategory.General]: [
       { username: "Test user", title: "general channel", id: "3" },
     ],
   };
   return dummyData;
 }
 
+async function newPost(json: Record<string, unknown>) {
+  const url = new URL("/post", import.meta.env.VITE_API_ADDRESS);
+  const res = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(json),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) throw new Error(res.statusText);
+  queryClient.invalidateQueries({ queryKey: ["posts"] });
+  return await res.json();
+}
+
 const Post: FC<{
   post: Post;
-  category: Category;
+  category: ForumCategory;
   openMessage: (userId: string) => void;
 }> = ({ post, category, openMessage }) => {
   return (
@@ -89,10 +109,12 @@ const Forum: FC = () => {
     queryFn: getPosts,
   });
 
-  const params = useParams<{ category: Category; post: string }>();
-  const category = params.category ?? Category.SupportGroup;
+  const params = useParams<{ category: ForumCategory; post: string }>();
+  const category = params.category ?? ForumCategory.SupportGroup;
 
   const navigate = useNavigate();
+
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (isLoading || !posts) {
     return (
@@ -145,6 +167,13 @@ const Forum: FC = () => {
   return (
     <>
       <UserNavBar />
+      <ForumPostDialog
+        open={dialogOpen}
+        onClose={(json) => {
+          if (json) newPost(json);
+          setDialogOpen(false);
+        }}
+      />
       <Box sx={{ display: "flex", flexDirection: "row", p: 3 }}>
         {/* Category Sidebar */}
         <Paper
@@ -160,7 +189,7 @@ const Forum: FC = () => {
             Categories
           </Typography>
           <List disablePadding>
-            {Object.values(Category).map((cat) => (
+            {Object.values(ForumCategory).map((cat) => (
               <ListItemButton
                 key={cat}
                 onClick={() => navigate(`/community-forums/${cat}`)}
@@ -182,6 +211,13 @@ const Forum: FC = () => {
         {/* Main Content Area */}
         <Box sx={{ flex: 1, borderRadius: "12px", p: 2 }}>{body}</Box>
       </Box>
+      <Fab
+        aria-label="add"
+        className="fixed right-8 bottom-8 bg-[#FEC10E]"
+        onClick={() => setDialogOpen(true)}
+      >
+        <AddIcon />
+      </Fab>
     </>
   );
 };
