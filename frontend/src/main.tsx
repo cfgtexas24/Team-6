@@ -1,8 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./routes/Home";
+import Landing from "./routes/Landing";
+import SignUp from "./routes/SignUp";
+import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
+import Home from "./routes/Home";
 import JobBoard from "./routes/JobBoard.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
@@ -28,7 +31,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Landing />, // Use Landing from fe-sign-up-screens
       },
       {
         path: "/community-forums",
@@ -52,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/jobs",
-        element: <JobBoard />,
+        element: <JobBoard />, // Use JobBoard from main
       },
       {
         path: "/direct-message/:otherUser",
@@ -63,6 +66,14 @@ const router = createBrowserRouter([
         element: <Alumni />,
       },
     ],
+  },
+  {
+    path: "/signup",
+    element: <SignUp />, // Use SignUp from fe-sign-up-screens
+  },
+  {
+    path: "/signup-employer",
+    element: <EmployerSignUp />, // Use EmployerSignUp from fe-sign-up-screens
   },
 ]);
 
