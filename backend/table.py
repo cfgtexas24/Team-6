@@ -32,7 +32,7 @@ cursor.execute('''
 print("table created successfully")
 
 cursor.execute('''
-            CREATE TABLE IF NOT EXISTSS Employer(
+            CREATE TABLE IF NOT EXISTS Employer(
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 email VARCHAR(50) NOT NULL UNIQUE) ''' )
 
