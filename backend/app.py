@@ -96,77 +96,108 @@ def add_user():
 
     return jsonify({'message':'User added sucessfully!'}),201
 
-
-#route to get all Employers
-@app.route('/Employers',methods=['GET'])
-def get_employers():
-    #renamed function to get employer
-    conn=get_conn_database()
-    Employers=conn.execute('SELECT * FROM Employers').fetchall()
-    conn.close()
-
-    #convert data fetch into dictionary and send json reponse
-
-    user_list=[dict(Employers) for user in Employers]
-    return jsonify(user_list)
-
-
-#route to add new user
-@app.route('/Employers', methods=['POST'])
+#route to add new employer user
+@app.route('/employer', methods=['POST'])
 def add_employer():
     data=request.get_json()
-    email=data['email']
+    email=data('email')
 
-    if not email:
-        return(jsonify({'message':'Need to provide email'}),400)
 
-    conn=get_conn_database()
-    conn.execute('INSERT INTO Employers (email) VALUES (?)', ( email))
-    conn.commit()
-    conn.close()
 
-    return jsonify({'message':'User added sucessfully!'}),201
+    if not email :
+        return(jsonify({'message':'Need to provide the following email information'}),400)
+    conn,cursor=get_conn_database()
+
+    if not conn:
+        return jsonify({'message': 'Database connection failed'}), 500
+
+
+
+    try:
+        insert_query='INSERT INTO comments (email) VALUES (%s)'
+        cursor.execute(insert_query,(email))
+        conn.commit()
+
+        return jsonify({'message':'post added sucessfully!'}),201
+
+    except Exception as e:
+        conn.rollback()  # Rollback in case of any error
+        return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
+
+    finally:
+        cursor.close()  # Close the cursor
+        conn.close()  # Close the connection
+
 
 
 
 #route to add new post
-@app.route('/Post', methods=['POST'])
+@app.route('/post', methods=['POST'])
 def add_post():
     data=request.get_json()
     title=data['title']
     content=data['content']
-    user_name=data['username']
+    username=data['username']
 
 
 
-    if not title or not content or not user_name :
+    if not title or not content or not username :
         return(jsonify({'message':'Need to provide the following information'}),400)
+    conn,cursor=get_conn_database()
 
-    conn=get_conn_database()
-    conn.execute('INSERT INTO Post (title, content,user_name) VALUES (?,?,?)', ( title, content, user_name))
-    conn.commit()
-    conn.close()
+    if not conn:
+        return jsonify({'message': 'Database connection failed'}), 500
 
-    return jsonify({'message':'Post added sucessfully!'}),201
+
+
+    try:
+        insert_query='INSERT INTO comments (title,content,username) VALUES (%s,%s,%s)'
+        cursor.execute(insert_query,(title,content,username))
+        conn.commit()
+
+        return jsonify({'message':'post added sucessfully!'}),201
+
+    except Exception as e:
+        conn.rollback()  # Rollback in case of any error
+        return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
+
+    finally:
+        cursor.close()  # Close the cursor
+        conn.close()  # Close the connection
 
 #route to add new comment
 @app.route('/comments', methods=['POST'])
 def add_comment():
     data=request.get_json()
-    title=data['title']
-    post_id=data['post_id']
-    username=data['username']
+    title=data('title')
+    post_id=data('post_id')
+    username=data('username')
+
+
 
     if not title or not post_id or not username :
         return(jsonify({'message':'Need to provide the following information'}),400)
+    conn,cursor=get_conn_database()
 
-    conn=get_conn_database()
-    conn.execute('INSERT INTO comments (title,post_id,user_name) VALUES (?,?,?)', ( title, post_id, username))
-    conn.commit()
-    conn.close()
+    if not conn:
+        return jsonify({'message': 'Database connection failed'}), 500
 
-    return jsonify({'message':'comment added sucessfully!'}),201
 
+
+    try:
+        insert_query='INSERT INTO comments (title,post_id,username) VALUES (%s,%s,%s)'
+        cursor.execute(insert_query,(title,post_id,username))
+        conn.commit()
+
+        return jsonify({'message':'comment added sucessfully!'}),201
+
+    except Exception as e:
+        conn.rollback()  # Rollback in case of any error
+        return jsonify({'message': 'Failed to add comment', 'error': str(e)}), 500
+
+    finally:
+        cursor.close()  # Close the cursor
+        conn.close()  # Close the connection
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
