@@ -7,6 +7,7 @@ import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
 import Home from "./routes/Home";
 import JobBoard from "./routes/JobBoard.tsx";
+import CreateJobs from "./routes/CreateJobs.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -19,12 +20,11 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import EmployerProfilePage from "./routes/EmployerProfile";
+import EmployerStudentSearchPage from "./routes/EmployerStudentSearch";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
-import EmployerProfilePage from "./routes/EmployerProfile";
-import EmployerStudentSearchPage from "./routes/EmployerStudentSearch";
-
 
 const router = createBrowserRouter([
   {
@@ -81,6 +81,14 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />, // Use SignUp from fe-sign-up-screens
+  },
+  {
+    path: "/jobs",
+    element: <JobBoard />,
+  },
+  {
+    path: "/create-a-job",
+    element: <CreateJobs />
   },
   {
     path: "/signup-employer",
