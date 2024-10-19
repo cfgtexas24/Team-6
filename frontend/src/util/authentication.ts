@@ -18,7 +18,9 @@ export function getUserId() {
   const token = getToken();
   if (!token) return null;
   const decoded = jwtDecode(token);
-  return decoded.sub;
+  if (!decoded.sub) return null;
+  if (typeof decoded.sub === "string") return decoded.sub;
+  return (decoded.sub as { username: string }).username;
 }
 
 export function checkUserAuth(): boolean {

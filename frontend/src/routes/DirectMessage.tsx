@@ -75,7 +75,7 @@ const DirectMessage: FC = () => {
       </IconButton>
       <Box className="flex flex-col">
         {messages.map((msg) => (
-          <Card className="my-2">
+          <Card className="my-2" key={msg.message + msg.timestamp}>
             <CardContent>
               <Typography variant="caption">
                 {msg.username} ({new Date(msg.timestamp).toLocaleDateString()}{" "}

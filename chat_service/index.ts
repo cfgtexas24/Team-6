@@ -55,6 +55,7 @@ io.on("connection", (socket) => {
   socket.on("chat", (otherUser: string, message: ChatMessage) => {
     const roomId = getRoomID(userId, otherUser);
     socket.to(roomId).emit("chat", [message]);
+    if (!(roomId in chatDB)) chatDB[roomId] = [];
     chatDB[roomId].push(message);
   });
 });
