@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Box, Typography, Button, Tabs, Tab, Avatar, Grid, Paper, TextField, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
-import { Edit, Add, PhotoCamera } from '@mui/icons-material';
+import { Edit, Add, PhotoCamera, Delete } from '@mui/icons-material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+
 
 interface Job {
   title: string;
@@ -48,15 +49,7 @@ const EmployerProfilePage: React.FC = () => {
   });
   const [aboutDescription, setAboutDescription] = useState<string>('This is a description of the company. It tells the company\'s mission, vision, and values. Here you can get to know more about what they do.');
   const [isEditingAbout, setIsEditingAbout] = useState<boolean>(false);
-  const [newJobData, setNewJobData] = useState<Job>({
-    title: '',
-    type: '',
-    payRange: '',
-    location: '',
-    datePosted: 'Just now',
-    startDate: '',
-    endDate: ''
-  });
+  const [newJobData, setNewJobData] = useState<Job | null>(null); // State to manage new job data
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
@@ -91,22 +84,25 @@ const EmployerProfilePage: React.FC = () => {
 
   const handleEditJobOpen = (index: number) => {
     setEditJobOpen(index);
+    setNewJobData(null); // Clear any new job data when editing existing jobs
   };
 
-  const handleEditJobClose = (isSave: boolean) => {
-    if (editJobOpen === jobs.length && isSave) {
-      // Add the new job only if "Save" was clicked and it's a new job entry
-      setJobs([...jobs, { ...newJobData, datePosted: 'Just now' }]);
-    }
+  const handleNewJobOpen = () => {
+    setEditJobOpen(jobs.length);
+    setNewJobData({
+      title: '',
+      type: '',
+      payRange: '',
+      location: '',
+      datePosted: 'Just now',
+      startDate: '',
+      endDate: ''
+    });
+  };
+
+  const handleEditJobClose = () => {
     setEditJobOpen(null);
-  };
-
-  const handleNewJobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewJobData({ ...newJobData, [e.target.name]: e.target.value });
-  };
-
-  const handleNewJobDateChange = (date: any, field: string) => {
-    setNewJobData({ ...newJobData, [field]: date ? date.toISOString() : '' });
+    setNewJobData(null); // Clear new job data when dialog is closed
   };
 
   const handleJobChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -117,11 +113,46 @@ const EmployerProfilePage: React.FC = () => {
     }
   };
 
+  const handleNewJobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (newJobData) {
+      setNewJobData({ ...newJobData, [e.target.name]: e.target.value });
+    }
+  };
+
   const handleDateChange = (date: any, field: string, index: number) => {
     if (index !== null && index >= 0 && index < jobs.length) {
       const updatedJobs = [...jobs];
-      updatedJobs[index] = { ...updatedJobs[index], [field]: date ? date.toISOString() : '' };
+
+      if (field === 'startDate') {
+        if (date && updatedJobs[index].endDate && dayjs(date).isAfter(dayjs(updatedJobs[index].endDate))) {
+          alert('Start date cannot be after the end date.');
+          return;
+        }
+        updatedJobs[index] = { ...updatedJobs[index], [field]: date ? date.toISOString() : '' };
+      } else if (field === 'endDate') {
+        if (date && updatedJobs[index].startDate && dayjs(date).isBefore(dayjs(updatedJobs[index].startDate))) {
+          alert('End date cannot be before start date.');
+          return;
+        }
+        updatedJobs[index] = { ...updatedJobs[index], [field]: date ? date.toISOString() : '' };
+      }
+
       setJobs(updatedJobs);
+    }
+  };
+
+
+  const handleNewJobDateChange = (date: any, field: string) => {
+    if (newJobData) {
+      setNewJobData({ ...newJobData, [field]: date ? date.toISOString() : '' });
+    }
+  };
+
+  const handleDeleteJob = (index: number) => {
+    if (index !== null && index >= 0 && index < jobs.length) {
+      const updatedJobs = jobs.filter((_, i) => i !== index);
+      setJobs(updatedJobs);
+      setEditJobOpen(null);
     }
   };
 
@@ -238,18 +269,7 @@ const EmployerProfilePage: React.FC = () => {
               <Button
                 variant="contained"
                 startIcon={<Add />}
-                onClick={() => {
-                  setEditJobOpen(jobs.length);
-                  setNewJobData({
-                    title: '',
-                    type: '',
-                    payRange: '',
-                    location: '',
-                    datePosted: 'Just now',
-                    startDate: '',
-                    endDate: ''
-                  });
-                }}
+                onClick={handleNewJobOpen}
               >
                 Create New Job Posting
               </Button>
@@ -276,19 +296,19 @@ const EmployerProfilePage: React.FC = () => {
 
         {/* Edit Job Dialog */}
         {editJobOpen !== null && (
-          <Dialog open={editJobOpen !== null} onClose={() => handleEditJobClose(false)}>
-            <DialogTitle>{editJobOpen === jobs.length ? 'Create New Job Posting' : 'Edit Job Posting'}</DialogTitle>
+          <Dialog open={editJobOpen !== null} onClose={handleEditJobClose}>
+            <DialogTitle>{newJobData ? 'Create New Job Posting' : 'Edit Job Posting'}</DialogTitle>
             <DialogContent>
               <TextField
                 margin="dense"
                 label="Job Title"
                 name="title"
                 fullWidth
-                value={editJobOpen === jobs.length ? newJobData.title : jobs[editJobOpen].title}
+                value={newJobData ? newJobData.title : jobs[editJobOpen]?.title}
                 onChange={(e) => {
-                  if (editJobOpen === jobs.length) {
+                  if (newJobData) {
                     handleNewJobChange(e);
-                  } else {
+                  } else if (editJobOpen !== null) {
                     handleJobChange(e, editJobOpen);
                   }
                 }}
@@ -298,11 +318,11 @@ const EmployerProfilePage: React.FC = () => {
                 label="Job Type"
                 name="type"
                 fullWidth
-                value={editJobOpen === jobs.length ? newJobData.type : jobs[editJobOpen].type}
+                value={newJobData ? newJobData.type : jobs[editJobOpen]?.type}
                 onChange={(e) => {
-                  if (editJobOpen === jobs.length) {
+                  if (newJobData) {
                     handleNewJobChange(e);
-                  } else {
+                  } else if (editJobOpen !== null) {
                     handleJobChange(e, editJobOpen);
                   }
                 }}
@@ -312,11 +332,11 @@ const EmployerProfilePage: React.FC = () => {
                 label="Pay Range"
                 name="payRange"
                 fullWidth
-                value={editJobOpen === jobs.length ? newJobData.payRange : jobs[editJobOpen].payRange}
+                value={newJobData ? newJobData.payRange : jobs[editJobOpen]?.payRange}
                 onChange={(e) => {
-                  if (editJobOpen === jobs.length) {
+                  if (newJobData) {
                     handleNewJobChange(e);
-                  } else {
+                  } else if (editJobOpen !== null) {
                     handleJobChange(e, editJobOpen);
                   }
                 }}
@@ -326,22 +346,22 @@ const EmployerProfilePage: React.FC = () => {
                 label="Location"
                 name="location"
                 fullWidth
-                value={editJobOpen === jobs.length ? newJobData.location : jobs[editJobOpen].location}
+                value={newJobData ? newJobData.location : jobs[editJobOpen]?.location}
                 onChange={(e) => {
-                  if (editJobOpen === jobs.length) {
+                  if (newJobData) {
                     handleNewJobChange(e);
-                  } else {
+                  } else if (editJobOpen !== null) {
                     handleJobChange(e, editJobOpen);
                   }
                 }}
               />
               <DesktopDatePicker
                 label="Start Date"
-                value={editJobOpen === jobs.length ? (newJobData.startDate ? dayjs(newJobData.startDate) : null) : (jobs[editJobOpen].startDate ? dayjs(jobs[editJobOpen].startDate) : null)}
+                value={newJobData ? (newJobData.startDate ? dayjs(newJobData.startDate) : null) : (jobs[editJobOpen]?.startDate ? dayjs(jobs[editJobOpen]?.startDate) : null)}
                 onChange={(date) => {
-                  if (editJobOpen === jobs.length) {
+                  if (newJobData) {
                     handleNewJobDateChange(date, 'startDate');
-                  } else {
+                  } else if (editJobOpen !== null) {
                     handleDateChange(date, 'startDate', editJobOpen);
                   }
                 }}
@@ -349,12 +369,12 @@ const EmployerProfilePage: React.FC = () => {
               />
               <DesktopDatePicker
                 label="End Date"
-                value={editJobOpen === jobs.length ? (newJobData.endDate ? dayjs(newJobData.endDate) : null) : (jobs[editJobOpen].endDate ? dayjs(jobs[editJobOpen].endDate) : null)}
+                value={newJobData ? (newJobData.endDate ? dayjs(newJobData.endDate) : null) : (jobs[editJobOpen]?.endDate ? dayjs(jobs[editJobOpen]?.endDate) : null)}
                 onChange={(date) => {
-                  if (editJobOpen === jobs.length) {
+                  if (newJobData) {
                     handleNewJobDateChange(date, 'endDate');
-                  } else {
-                    if (date && jobs[editJobOpen].startDate && dayjs(date).isBefore(dayjs(jobs[editJobOpen].startDate))) {
+                  } else if (editJobOpen !== null) {
+                    if (date && jobs[editJobOpen]?.startDate && dayjs(date).isBefore(dayjs(jobs[editJobOpen]?.startDate))) {
                       alert('End date cannot be before start date.');
                     } else {
                       handleDateChange(date, 'endDate', editJobOpen);
@@ -365,9 +385,20 @@ const EmployerProfilePage: React.FC = () => {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => handleEditJobClose(false)}>Cancel</Button>
+              <Button onClick={handleEditJobClose}>Cancel</Button>
+              {editJobOpen !== null && editJobOpen < jobs.length && (
+                <Button color="error" onClick={() => handleDeleteJob(editJobOpen)} startIcon={<Delete />}>
+                  Delete
+                </Button>
+              )}
               <Button
-                onClick={() => handleEditJobClose(true)}
+                onClick={() => {
+                  if (newJobData) {
+                    // Save new job to the jobs array
+                    setJobs([...jobs, newJobData]);
+                  }
+                  handleEditJobClose();
+                }}
                 variant="contained"
               >
                 Save
