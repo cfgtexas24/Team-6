@@ -4,9 +4,9 @@ import { Link as ScrollLink } from "react-scroll";
 import { Link } from "react-router-dom";
 import REE from "../assets/REE.png";
 
-const LandingNavbar: React.FC = () => {
+const LandingNavbar = () => {
   return (
-    <AppBar position="sticky" color="transparent" elevation={0}>
+    <AppBar position="fixed" color="transparent" elevation={0}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
         <Box component="div" sx={{ display: "flex", alignItems: "center" }}>
