@@ -2,16 +2,15 @@ from flask import Flask, jsonify,request
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 from dotenv import load_dotenv
 from flask_cors import CORS
+import mysql.connector
+from config import Config
 import os
-import sqlite3
 load_dotenv()
 
 
 secret = os.getenv("secret")
-load_dotenv()
 
 app= Flask(__name__)
-app.config.from_prefixed_env()
 CORS(app)
 
 
@@ -19,39 +18,83 @@ app.config["JWT_SECRET_KEY"] = secret# Change this!
 jwt = JWTManager(app)
 
 
-def get_conn_database():
-    conn=sqlite3.connect('backend/database.db')
-    conn.row_factory=sqlite3.Row #fetch data as rows
-    return conn
 
-#Added login route which returns jwt token
+#
+def get_conn_database():
+    app.config.from_object(Config)
+
+    try:
+        conn = mysql.connector.connect(
+            username=app.config['MYSQL_USER'],
+            password=app.config['MYSQL_PASSWORD'],
+            host=app.config['MYSQL_HOST'],
+            database=app.config['MYSQL_DB']
+        )
+
+        if conn.is_connected():
+            print("Connected to MySQL database")
+            cursor = conn.cursor()
+            return conn, cursor  # Return both connection and cursor
+    except Error as e:
+        print(f"Error: {e}")
+        return None, None  # Return None if there was an error
+
+def get_user_role(username, password):
+    conn, cursor = get_conn_database()
+    if conn is None or cursor is None:
+        return None
+
+    try:
+        sql = ("SELECT role FROM Users WHERE username = %s AND password = %s")
+        cursor.execute(sql, (username, password))
+        result = cursor.fetchone()
+
+        if result:
+            return result[0], None
+        else:
+            return None, "Invalid Username or Password"
+
+    except mysql.connector.Error as e:
+        return None, "Error Fetching data"
+    finally:
+        cursor.close()
+        conn.close()
+
+
+#when logged in you will get jwt token
 @app.route('/login', methods=['POST'])
 def login():
-    user_name = request.json.get("user_name", None)
-    password = request.json.get("password", None)
-    if not user_name or not password:
-        return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=user_name)
-    return jsonify(access_token=access_token)
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    if not username or not password :
+        return jsonify({"message": "Error with username or password"}), 400
+
+    role, error = get_user_role(username, password)  # Check user credentials
+    if error:
+        return jsonify({"error": "ERROR"}), 401
+    access_token = create_access_token(identity={'role': role})
+    return jsonify(access_token=access_token), 200
 
 
 #route to add new user
 @app.route('/register', methods=['POST'])
 def add_user():
     data=request.get_json()
-    user_name=data['user_name']
+    username=data['username']
     password=data['password']
     email=data['email']
-
-    if not user_name or not password or not email:
+    role=data['role']
+    conn, cursor = get_conn_database()
+    if not username or not password or not email:
         return(jsonify({'message':'you must include a username, password and an email'}),400)
 
-    with get_conn_database() as conn:
-        conn.execute('INSERT INTO Users (user_name, password, email) VALUES (?, ?, ?)', (user_name, password, email))
-        conn.commit()
+    sql = ('INSERT INTO Users (username, password, email, role) VALUES (%s, %s, %s, %s)')
+    cursor.execute(sql, (username, password, email, role))
+    conn.commit()
 
-        return jsonify({'message':'User added sucessfully!'}),201
+    return jsonify({'message':'User added sucessfully!'}),201
 
 
 #route to get all Employers
@@ -84,5 +127,46 @@ def add_employer():
 
     return jsonify({'message':'User added sucessfully!'}),201
 
+
+
+#route to add new post
+@app.route('/Post', methods=['POST'])
+def add_post():
+    data=request.get_json()
+    title=data['title']
+    content=data['content']
+    user_name=data['username']
+
+
+
+    if not title or not content or not user_name :
+        return(jsonify({'message':'Need to provide the following information'}),400)
+
+    conn=get_conn_database()
+    conn.execute('INSERT INTO Post (title, content,user_name) VALUES (?,?,?)', ( title, content, user_name))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message':'Post added sucessfully!'}),201
+
+#route to add new comment
+@app.route('/comments', methods=['POST'])
+def add_comment():
+    data=request.get_json()
+    title=data['title']
+    post_id=data['post_id']
+    username=data['username']
+
+    if not title or not post_id or not username :
+        return(jsonify({'message':'Need to provide the following information'}),400)
+
+    conn=get_conn_database()
+    conn.execute('INSERT INTO comments (title,post_id,user_name) VALUES (?,?,?)', ( title, post_id, username))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message':'comment added sucessfully!'}),201
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
