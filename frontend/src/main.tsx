@@ -5,6 +5,9 @@ import Home from "./routes/Home";
 import StudentProfile from "./routes/StudentProfile";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
+import Login from "./routes/Login";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./util/queryclient";
 // Setup Tailwind CSS:
 import "./index.css";
 // CSS for Roboto which is used by MUI:
@@ -36,18 +39,24 @@ const router = createBrowserRouter([
         path: "/community-forums/:category/:post",
         element: <Forum />,
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/student-profile",
+        element: <StudentProfile />,
+      },
     ],
-  },
-  {
-    path: "/student-profile",
-    element: <StudentProfile />,
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <StyledEngineProvider injectFirst>
-      <RouterProvider router={router} />
-    </StyledEngineProvider>
+    <QueryClientProvider client={queryClient}>
+      <StyledEngineProvider injectFirst>
+        <RouterProvider router={router} />
+      </StyledEngineProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
