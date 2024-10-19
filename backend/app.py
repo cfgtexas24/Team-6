@@ -133,7 +133,7 @@ def add_employer():
 
 @app.route('/post', methods=['POST', 'GET'])
 def add_post():
-    
+
     conn, cursor = get_conn_database()
 
     if not conn:
@@ -141,10 +141,10 @@ def add_post():
 
     if request.method == 'POST':
         data = request.get_json()
-        title = data.get['title']
-        content = data.get['content']
-        username = data.get['username']
-
+        title = data['title']
+        content = data['content']
+        username = data['username']
+        user_id = data['user_id']
         if not title or not content or not username:
             return jsonify({'message': 'Need to provide the following information'}), 400
 
@@ -153,26 +153,26 @@ def add_post():
             user=cursor.fetchone()
             if not user:
                 return jsonify({'message':'user not not found'}),404
-            
+
             user_id=user[0]
             # place into post table
-            insert_query = 'INSERT INTO Post (title, content, username) VALUES (%s, %s, %s)'
-            cursor.execute(insert_query, (title, content, user_id))
+            insert_query = 'INSERT INTO Post (title, content, username, user_id) VALUES (%s, %s, %s,%s)'
+            cursor.execute(insert_query, (title, content, username,user_id))
             conn.commit()
 
             return jsonify({'message': 'Post added successfully!'}), 201
 
         except Exception as e:
-            conn.rollback()  
+            conn.rollback()
             return jsonify({'message': 'Failed to add post', 'error': str(e)}), 500
 
         finally:
-            cursor.close()  
-            conn.close()  
+            cursor.close()
+            conn.close()
 
     elif request.method == 'GET':
         try:
-            #get all the data 
+            #get all the data
             cursor.execute('SELECT * FROM Post')
             posts = cursor.fetchall()
 
@@ -180,11 +180,11 @@ def add_post():
             all_posts = []
             for post in posts:
                 all_posts.append({
-                    'id': post[0],         
-                    'title': post[1],      
-                    'content': post[2],    
-                    'username': post[3],   
-                    'created_at': post[4] 
+                    'id': post[0],
+                    'title': post[1],
+                    'content': post[2],
+                    'username': post[3],
+                    'created_at': post[4]
                 })
 
             return jsonify(all_posts), 200
