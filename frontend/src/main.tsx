@@ -20,6 +20,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import EmployerProfilePage from "./routes/EmployerProfile";
+import EmployerStudentSearchPage from "./routes/EmployerStudentSearch";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
 import Alumni from "./routes/Alumni.tsx";
@@ -65,6 +67,14 @@ const router = createBrowserRouter([
       {
         path: "/talk-to-alumni",
         element: <Alumni />,
+      },
+      {
+        path: "/employer-profile",
+        element: <EmployerProfilePage />,
+      },
+      {
+        path: "/employer-student-search",
+        element: <EmployerStudentSearchPage />,
       },
     ],
   },
