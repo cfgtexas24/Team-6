@@ -18,6 +18,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Forum from "./routes/Forum";
 import DirectMessage from "./routes/DirectMessage";
+import Alumni from "./routes/Alumni.tsx";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/direct-message/:otherUser",
         element: <DirectMessage />,
+      },
+      {
+        path: "/talk-to-alumni",
+        element: <Alumni />,
       },
     ],
   },
