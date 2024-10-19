@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./routes/Home";
 import StudentProfile from "./routes/StudentProfile";
 import JobBoard from "./routes/JobBoard.tsx";
+import CreateJobs from "./routes/CreateJobs.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 // Setup Tailwind CSS:
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/jobs",
     element: <JobBoard />,
+  },
+  {
+    path: "/create-a-job",
+    element: <CreateJobs />
   }
 ]);
 
