@@ -27,13 +27,18 @@ def get_conn_database():
 #Added login route which returns jwt token
 @app.route('/login', methods=['POST'])
 def login():
+
     user_name = request.json.get("user_name", None)
     password = request.json.get("password", None)
-    if not user_name or not password:
-        return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=user_name)
-    return jsonify(access_token=access_token)
+    if not user_name or not password :
+        return jsonify({"msg": "Bad username or password"}), 401
+    with get_conn_database() as conn:
+        cursor = conn.execute('SELECT user_name, role FROM Users WHERE user_name = ?', (username,))
+        result = cursor.fetchone()
+        role = result['role']
+        access_token = create_access_token(identity={"role":role})
+        return jsonify(access_token=access_token)
 
 
 #route to add new user
@@ -43,12 +48,13 @@ def add_user():
     user_name=data['user_name']
     password=data['password']
     email=data['email']
+    role=data['role']
 
     if not user_name or not password or not email:
         return(jsonify({'message':'you must include a username, password and an email'}),400)
 
     with get_conn_database() as conn:
-        conn.execute('INSERT INTO Users (user_name, password, email) VALUES (?, ?, ?)', (user_name, password, email))
+        conn.execute('INSERT INTO Users (user_name, password, email, role) VALUES (?, ?, ?, ?)', (user_name, password, email, role))
         conn.commit()
 
         return jsonify({'message':'User added sucessfully!'}),201
