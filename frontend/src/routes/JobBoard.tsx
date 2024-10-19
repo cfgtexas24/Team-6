@@ -34,25 +34,25 @@ const JobBoard: FC = () => {
         <div className="flex space-x-2">
           <button
             onClick={() => setJobType('all')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'all' ? 'bg-blue-500 text-white font-bold' : 'bg-white'}`}
+            className={`w-28 px-4 py-3 rounded-full ${jobType === 'all' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
           >
             All
           </button>
           <button
             onClick={() => setJobType('intern')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'intern' ? 'bg-blue-500 text-white font-bold' : 'bg-white'}`}
+            className={`w-28 px-4 py-3 rounded-full ${jobType === 'intern' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
           >
             Intern
           </button>
           <button
             onClick={() => setJobType('full-time')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'full-time' ? 'bg-blue-500 text-white font-bold' : 'bg-white'}`}
+            className={`w-28 px-4 py-3 rounded-full ${jobType === 'full-time' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
           >
             Full-Time
           </button>
           <button
             onClick={() => setJobType('part-time')}
-            className={`w-28 px-4 py-3 rounded-full ${jobType === 'part-time' ? 'bg-blue-500 text-white font-bold' : 'bg-white'}`}
+            className={`w-28 px-4 py-3 rounded-full ${jobType === 'part-time' ? 'bg-[#475299] text-white font-bold' : 'bg-white'}`}
           >
             Part-Time
           </button>
@@ -66,7 +66,7 @@ const JobBoard: FC = () => {
             filteredJobs.map(job => (
               <div 
                 key={job.id} 
-                className={`job-listing p-4 border-b border-gray-300 cursor-pointer ${selectedJob?.id === job.id ? 'bg-[#B0C4DE]' : 'hover:bg-gray-100'}`}
+                className={`job-listing p-4 border-b border-gray-300 cursor-pointer ${selectedJob?.id === job.id ? 'bg-[#c5cae8]' : 'hover:bg-gray-100'}`}
                 onClick={() => setSelectedJob(job)}
               >
                 <h2 className="text-lg font-semibold">{job.title}</h2>
