@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
-import LandingNavBar from "../components/LandingNavBar";
+import UserNavBar from "../components/UserNavBar";
 
 /**
  * This component is present on every route.
@@ -12,7 +12,7 @@ const Root: FC = () => {
   // Fix: Might be easier to not use NavBar in root? Will need unique NavBars for each page i.e. LandingNavBar, UserNavBar, EmployerNavBar, etc.
   return (
     <>
-      <LandingNavBar />
+      <UserNavBar />
       <Outlet />
     </>
   );

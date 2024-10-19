@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Tabs, Tab, Button, Box } from "@mui/material";
 import { Link as ScrollLink } from "react-scroll";
-import { Link } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
+import { Link } from "react-router-dom";
 import REE from "../assets/REE.png";
 
 const LandingNavbar: React.FC = () => {
