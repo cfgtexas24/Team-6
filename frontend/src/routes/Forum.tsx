@@ -14,6 +14,7 @@ import { FC } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useQuery } from "@tanstack/react-query";
+import MessageIcon from "@mui/icons-material/Message";
 
 enum Category {
   SupportGroup = "Support Group",
@@ -48,19 +49,28 @@ async function getPosts() {
   return dummyData;
 }
 
-const Post: FC<{ post: Post; category: Category }> = ({ post, category }) => {
+const Post: FC<{
+  post: Post;
+  category: Category;
+  openMessage: (userId: string) => void;
+}> = ({ post, category, openMessage }) => {
   return (
-    <Link
-      to={`/community-forums/${category}/${post.id}`}
-      className="no-underline"
-    >
-      <Card>
-        <CardContent>
+    <Card>
+      <CardContent>
+        <Link
+          to={`/community-forums/${category}/${post.id}`}
+          className="no-underline hover:underline text-black"
+        >
           <Typography variant="h4">{post.title}</Typography>
-          <Typography variant="h6">{post.username}</Typography>
-        </CardContent>
-      </Card>
-    </Link>
+        </Link>
+        <Typography className="flex flex-row items-center" variant="h6">
+          <span>{post.username}</span>
+          <IconButton onClick={() => openMessage(post.username)}>
+            <MessageIcon />
+          </IconButton>
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -89,15 +99,29 @@ const Forum: FC = () => {
           <ArrowBackIcon />
         </IconButton>
       </Link>
-      <Post category={category} post={openedPost} />
+      <Post
+        category={category}
+        post={openedPost}
+        openMessage={(id) => navigate(`/direct-message/${id}`)}
+      />
       <Divider />
       {(openedPost.replies ?? []).map((p) => (
-        <Post post={p} category={category} />
+        <Post
+          post={p}
+          category={category}
+          openMessage={(id) => navigate(`/direct-message/${id}`)}
+        />
       ))}
     </>
   ) : (
     // List all of the threads
-    posts[category].map((post) => <Post post={post} category={category} />)
+    posts[category].map((post) => (
+      <Post
+        post={post}
+        category={category}
+        openMessage={(id) => navigate(`/direct-message/${id}`)}
+      />
+    ))
   );
 
   return (

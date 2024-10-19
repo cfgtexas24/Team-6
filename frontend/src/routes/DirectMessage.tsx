@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { chatSocket } from "../util/chat";
 import { ChatMessage } from "../../../chat_service/types";
 import {
@@ -7,14 +7,18 @@ import {
   Button,
   Card,
   CardContent,
+  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
 import { getUserId } from "../util/authentication";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const DirectMessage: FC = () => {
   const { otherUser } = useParams();
   if (!otherUser) throw new Error("Missing other user ID");
+
+  const navigate = useNavigate();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isConnected, setIsConnected] = useState(chatSocket.connected);
@@ -55,10 +59,14 @@ const DirectMessage: FC = () => {
     } as ChatMessage;
     chatSocket.emit("chat", otherUser, msg);
     setMessages((prev) => [...prev, msg]);
+    setCurrentMessage("");
   };
 
   return (
     <>
+      <IconButton onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </IconButton>
       <Box className="flex flex-col">
         {messages.map((msg) => (
           <Card className="my-2">
@@ -77,8 +85,12 @@ const DirectMessage: FC = () => {
           className="flex-1"
           label="Message"
           onChange={(ev) => setCurrentMessage(ev.target.value)}
+          value={currentMessage}
           disabled={!isConnected}
           helperText={isConnected ? undefined : "Cannot connect to server"}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter") sendMessage(currentMessage);
+          }}
         />
         <Button
           className="p-4 mx-2"
