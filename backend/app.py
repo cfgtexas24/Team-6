@@ -80,7 +80,7 @@ def login():
     role, error = get_user_role(username, password)  # Check user credentials
     if error:
         return jsonify({"error": "ERROR"}), 401
-    access_token = create_access_token(identity={'role': role})
+    access_token = create_access_token(identity={'role': role, 'username': username})
     return jsonify(access_token=access_token), 200
 
 
@@ -124,7 +124,7 @@ def add_employer():
 
 
     try:
-        insert_query='INSERT INTO comments (email) VALUES (%s)'
+        insert_query='INSERT INTO Employer (email) VALUES (%s)'
         cursor.execute(insert_query,(email,))
         conn.commit()
 
@@ -298,7 +298,7 @@ def get_post_by_username(username):
     #         conn.close()
 
     try:
-            #get all the data
+            #get all the posts for selected username
             query = ('SELECT * FROM Post WHERE username = %s')
             cursor.execute(query, (username,))
             posts = cursor.fetchall()
@@ -322,9 +322,6 @@ def get_post_by_username(username):
     finally:
         cursor.close()
         conn.close()
-
-
-
 
 
 if __name__ == '__main__':
