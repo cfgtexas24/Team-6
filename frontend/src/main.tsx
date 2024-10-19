@@ -7,6 +7,7 @@ import EmployerSignUp from "./routes/EmployerSignUp";
 import StudentProfile from "./routes/StudentProfile";
 import Home from "./routes/Home";
 import JobBoard from "./routes/JobBoard.tsx";
+import CreateJobs from "./routes/CreateJobs.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -70,6 +71,14 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />, // Use SignUp from fe-sign-up-screens
+  },
+  {
+    path: "/jobs",
+    element: <JobBoard />,
+  },
+  {
+    path: "/create-a-job",
+    element: <CreateJobs />
   },
   {
     path: "/signup-employer",
