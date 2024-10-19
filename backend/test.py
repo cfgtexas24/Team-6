@@ -1,11 +1,10 @@
 import requests
 
-url = "http://127.0.0.1:5000/register"
+url = "http://127.0.0.1:5000/login"
 
 data = {
   "user_name": "test",
   "password": "password",
-  "email": "testemail@email.com"
 }
 
 r = requests.post(url, json=data)
