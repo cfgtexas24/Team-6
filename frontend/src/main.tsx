@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./routes/Home";
-import StudentProfile from "./routes/StudentProfile"
+import StudentProfile from "./routes/StudentProfile";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -30,12 +30,12 @@ const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
+      {
+        path: "/student-profile",
+        element: <StudentProfile />,
+      },
     ],
   },
-  {
-    path: "/student-profile",
-    element: <StudentProfile />,
-  }
 ]);
 
 createRoot(document.getElementById("root")!).render(
