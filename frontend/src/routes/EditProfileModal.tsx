@@ -1,6 +1,6 @@
-// EditProfileModal.tsx
 import { FC } from 'react';
 
+//data type defintions for modal/profile inputs
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;

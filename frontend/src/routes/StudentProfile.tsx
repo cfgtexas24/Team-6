@@ -24,6 +24,7 @@ const StudentProfile: FC = () => {
     'AWS Certified Solutions Architect',
   ];
 
+  //handles user image uploads
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -35,6 +36,7 @@ const StudentProfile: FC = () => {
     }
   };
 
+  //handles new skill additions (adds to existing list)
   const handleAddSkill = () => {
     if (newSkill.trim() && !skills.includes(newSkill.trim())) {
       setSkills([...skills, newSkill.trim()]);
@@ -42,10 +44,12 @@ const StudentProfile: FC = () => {
     }
   };
 
+  //handles removing skills
   const handleRemoveSkill = (skillToRemove: string) => {
     setSkills(skills.filter(skill => skill !== skillToRemove));
   };
 
+  //function for turning on job preferences (intern, full-time, part-time)
   const toggleJobPreference = (preference: string) => {
     if (jobPreferences.includes(preference)) {
       setJobPreferences(jobPreferences.filter(pref => pref !== preference));
@@ -54,7 +58,7 @@ const StudentProfile: FC = () => {
     }
   };
 
-  //functions to handle resume and cover letter changes
+  //function to handle resume and cover letter changes
   const handleResumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -63,6 +67,7 @@ const StudentProfile: FC = () => {
     }
   };
 
+  //function to handle user given cover letters
   const handleCoverLetterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {

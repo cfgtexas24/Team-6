@@ -5,7 +5,7 @@ const JobBoard: FC = () => {
   const [jobType, setJobType] = useState<'all' | 'intern' | 'full-time' | 'part-time'>('all');
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
 
-  // Mock data with logo URLs
+  // mock data with logo URLs
   const jobs = [
     {
       id: 1,
