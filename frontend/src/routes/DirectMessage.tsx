@@ -78,8 +78,9 @@ const DirectMessage: FC = () => {
           <Card className="my-2" key={msg.message + msg.timestamp}>
             <CardContent>
               <Typography variant="caption">
-                {msg.username} ({new Date(msg.timestamp).toLocaleDateString()}{" "}
-                {new Date(msg.timestamp).toLocaleTimeString()})
+                {msg.username}
+                {new Date(msg.timestamp).toLocaleDateString()}{" "}
+                {new Date(msg.timestamp).toLocaleTimeString()}
               </Typography>
               <Typography variant="body1">{msg.message}</Typography>
             </CardContent>
