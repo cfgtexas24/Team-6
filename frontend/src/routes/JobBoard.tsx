@@ -11,7 +11,7 @@ const JobBoard: FC = () => {
       id: 1,
       title: 'Software Engineer',
       company: 'Company A',
-      type: 'Full-time',
+      type: 'full-time',
       description: 'Develop and maintain software applications.',
       hourlyPay: 40,
       logo: 'https://via.placeholder.com/40x40.png?text=A',
@@ -20,7 +20,7 @@ const JobBoard: FC = () => {
       id: 2,
       title: 'Data Analyst',
       company: 'Company B',
-      type: 'Intern',
+      type: 'intern',
       description: 'Analyze data and generate reports.',
       hourlyPay: 20,
       logo: 'https://via.placeholder.com/40x40.png?text=B',
@@ -29,7 +29,7 @@ const JobBoard: FC = () => {
       id: 3,
       title: 'Web Developer',
       company: 'Company C',
-      type: 'Part-time',
+      type: 'part-time',
       description: 'Build and design user-friendly websites.',
       hourlyPay: 30,
       logo: 'https://via.placeholder.com/40x40.png?text=C',
@@ -38,7 +38,7 @@ const JobBoard: FC = () => {
       id: 4,
       title: 'Product Manager',
       company: 'Company D',
-      type: 'Full-time',
+      type: 'full-time',
       description: 'Oversee product development and strategy.',
       hourlyPay: 50,
       logo: 'https://via.placeholder.com/40x40.png?text=D',
@@ -52,12 +52,11 @@ const JobBoard: FC = () => {
   );
 
   return (
-    <div className="job-board flex flex-col p-8 border border-gray-200 rounded-lg">
+    <div className="job-board flex flex-col p-8 bg-white">
       <h1 className="text-4xl font-bold text-[#475299] mb-6">Jobs</h1>
 
       {/* Search / Filter */}
       <div className="flex mb-6">
-        {/* Search Bar */}
         <div className="relative w-3/4 mr-4">
           <input
             type="text"
@@ -70,7 +69,7 @@ const JobBoard: FC = () => {
 
         {/* Filter Buttons */}
         <div className="flex space-x-2">
-          {['all', 'Intern', 'Full-time', 'Part-time'].map((type) => (
+          {['all', 'intern', 'full-time', 'part-time'].map((type) => (
             <button
               key={type}
               onClick={() => setJobType(type as any)}
@@ -83,6 +82,9 @@ const JobBoard: FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Divider Line */}
+      <hr className="border-t w-full border-gray-300 mb-6" />
 
       {/* Job Listings / Job Details */}
       <div className="flex w-full">
@@ -116,8 +118,11 @@ const JobBoard: FC = () => {
           )}
         </div>
 
+        {/* Vertical Divider */}
+        <div className="border-l border-gray-300 mx-4"></div>
+
         {/* Job Details */}
-        <div className="job-details w-1/2 pl-4 border-l border-gray-200 overflow-auto" style={{ maxHeight: '600px' }}>
+        <div className="job-details w-1/2 pl-4 overflow-auto" style={{ maxHeight: '600px' }}>
           {selectedJob ? (
             <div className="p-4">
               <div className="flex items-center space-x-4 mb-4">
