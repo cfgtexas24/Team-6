@@ -149,9 +149,15 @@ def add_post():
             return jsonify({'message': 'Need to provide the following information'}), 400
 
         try:
+            cursor.execute('SELECT id FROM Users WHERE username=%s',(username,))
+            user=cursor.fetchone()
+            if not user:
+                return jsonify({'message':'user not not found'}),404
+            
+            user_id=user[0]
             # place into post table
             insert_query = 'INSERT INTO Post (title, content, username) VALUES (%s, %s, %s)'
-            cursor.execute(insert_query, (title, content, username))
+            cursor.execute(insert_query, (title, content, user_id))
             conn.commit()
 
             return jsonify({'message': 'Post added successfully!'}), 201
