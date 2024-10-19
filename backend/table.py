@@ -1,17 +1,24 @@
 from flask import Flask, jsonify
-import sqlite3
-
-
-from flask import Flask, jsonify 
-import sqlite3 
-
+import mysql.connector
+from config import Config
 app= Flask(__name__)
 
+app.config.from_object(Config)
 
-conn=sqlite3.connect("database.db")
+
+conn = mysql.connector.connect(
+            username=app.config['MYSQL_USER'],
+            password=app.config['MYSQL_PASSWORD'],
+            host=app.config['MYSQL_HOST'],
+            database=app.config['MYSQL_DB']
+        )
+
+cursor = conn.cursor()
+
+
 print("database open successfully!!")
-conn.execute('''
-      CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT, 
+cursor.execute('''
+      CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT,
                                       user_name TEXT NOT NULL,
                                       password TEXT NOT NULL,
                                       email TEXT NOT NULL UNIQUE)''')
@@ -20,9 +27,9 @@ conn.execute('''
 print("table created successfully")
 
 
-conn.execute('''
+cursor.execute('''
     CREATE TABLE IF NOT EXISTS Post(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         username TEXT NOT NULL,
@@ -33,14 +40,14 @@ conn.execute('''
 ''')
 print("table post created successfully")
 
-conn.execute('''
+cursor.execute('''
     CREATE TABLE IF NOT EXISTS comments(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        post_id INTEGER NOT NULL,  
+        post_id INTEGER NOT NULL,
         username TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        user_id INTEGER, 
+        user_id INTEGER,
         FOREIGN KEY(post_id) REFERENCES Post(id),
         FOREIGN KEY(user_id) REFERENCES Users(id)
     )
@@ -49,16 +56,10 @@ print("table comments created successfully")
 
 
 
-conn=sqlite3.connect("backend/database.db")
-
-
-conn.execute('''
-      DROP TABLE Forums;
-''')
 
 
 print("table created successfully")
-conn.close()
+cusor.close()
 
 
 

@@ -2,11 +2,10 @@ from flask import Flask, jsonify,request
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flaskext.mysql import MySQL
 import os
 import sqlite3
 load_dotenv()
-
-
 
 
 secret = os.getenv("secret")
@@ -16,14 +15,25 @@ app= Flask(__name__)
 app.config.from_prefixed_env()
 CORS(app)
 
+username = os.getenv('username')
+password = os.getenv('password')
+database = os.getenv('database')
+host = os.getenv('ip_addr')
+
+
+app.config['MYSQL_DATABASE_USER'] = username
+app.config['MYSQL_DATABASE_PASSWORD'] = password
+app.config['MYSQL_DATABASE_DB'] = database
+app.config['MYSQL_DATABASE_HOST'] = ip
+
 
 app.config["JWT_SECRET_KEY"] = secret# Change this!
 jwt = JWTManager(app)
 
+mysql.init_app(app)
 
 def get_conn_database():
-    conn=sqlite3.connect('backend/database.db')
-    conn.row_factory=sqlite3.Row #fetch data as rows
+    conn = mysql.connect()  # Get a connection object from Flask-MySQL
     return conn
 
 #when logged in you will get jwt token
@@ -96,18 +106,39 @@ def add_post():
     title=data['title']
     content=data['content']
     user_name=data['username']
-    created_at=data['created_at']
 
 
-    if not title or not content or not user_name or not created_at:
+
+    if not title or not content or not user_name :
         return(jsonify({'message':'Need to provide the following information'}),400)
 
     conn=get_conn_database()
-    conn.execute('INSERT INTO Employers (email) VALUES (?,?,?,?)', ( title, content, user_name,created_at))
+    conn.execute('INSERT INTO Post (title, content,user_name) VALUES (?,?,?)', ( title, content, user_name))
     conn.commit()
     conn.close()
 
     return jsonify({'message':'Post added sucessfully!'}),201
+
+#route to add new comment
+@app.route('/comments', methods=['POST'])
+def add_comment():
+    data=request.get_json()
+    title=data['title']
+    post_id=data['post_id']
+    username=data['username']
+
+
+
+    if not title or not post_id or not username :
+        return(jsonify({'message':'Need to provide the following information'}),400)
+
+    conn=get_conn_database()
+    conn.execute('INSERT INTO comments (title,post_id,user_name) VALUES (?,?,?)', ( title, post_id, username))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message':'comment added sucessfully!'}),201
+
 
 
 
