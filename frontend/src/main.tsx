@@ -14,6 +14,8 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import EmployerProfilePage from "./routes/EmployerProfile";
+import EmployerStudentSearchPage from "./routes/EmployerStudentSearch";
+
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/employer-profile",
         element: <EmployerProfilePage />,
+      },
+      {
+        path: "/employer-student-search",
+        element: <EmployerStudentSearchPage />,
       },
     ],
   },
