@@ -2,44 +2,43 @@ from flask import Flask, jsonify,request
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 from dotenv import load_dotenv
 from flask_cors import CORS
-from flaskext.mysql import MySQL
+import mysql.connector
+from config import Config
 import os
-import sqlite3
 load_dotenv()
 
 
 secret = os.getenv("secret")
-load_dotenv()
 
 app= Flask(__name__)
-app.config.from_prefixed_env()
 CORS(app)
-
-username = os.getenv('username')
-password = os.getenv('password')
-database = os.getenv('database')
-host = os.getenv('ip_addr')
-
-
-app.config['MYSQL_DATABASE_USER'] = username
-app.config['MYSQL_DATABASE_PASSWORD'] = password
-app.config['MYSQL_DATABASE_DB'] = database
-app.config['MYSQL_DATABASE_HOST'] = ip
 
 
 app.config["JWT_SECRET_KEY"] = secret# Change this!
 jwt = JWTManager(app)
 
-mysql.init_app(app)
-
 def get_conn_database():
-    conn = mysql.connect()  # Get a connection object from Flask-MySQL
-    return conn
+    app.config.from_object(Config)
+
+    try:
+        conn = mysql.connector.connect(
+            username=app.config['MYSQL_USER'],       # Changed from username to user
+            password=app.config['MYSQL_PASSWORD'],
+            host=app.config['MYSQL_HOST'],
+            database=app.config['MYSQL_DB']
+        )
+
+        if conn.is_connected():
+            print("Connected to MySQL database")
+            cursor = conn.cursor()
+            return conn, cursor  # Return both connection and cursor
+    except Error as e:
+        print(f"Error: {e}")
+        return None, None  # Return None if there was an error
 
 #when logged in you will get jwt token
 @app.route('/login', methods=['POST'])
 def login():
-
     user_name = request.json.get("user_name", None)
     password = request.json.get("password", None)
 
@@ -52,19 +51,19 @@ def login():
 @app.route('/register', methods=['POST'])
 def add_user():
     data=request.get_json()
-    user_name=data['user_name']
+    username=data['username']
     password=data['password']
     email=data['email']
     role=data['role']
-
-    if not user_name or not password or not email:
+    conn, cursor = get_conn_database()
+    if not username or not password or not email:
         return(jsonify({'message':'you must include a username, password and an email'}),400)
 
-    with get_conn_database() as conn:
-        conn.execute('INSERT INTO Users (user_name, password, email, role) VALUES (?, ?, ?, ?)', (user_name, password, email, role))
-        conn.commit()
+    sql = ('INSERT INTO Users (username, password, email, role) VALUES (%s, %s, %s, %s)')
+    cursor.execute(sql, (username, password, email, role))
+    conn.commit()
 
-        return jsonify({'message':'User added sucessfully!'}),201
+    return jsonify({'message':'User added sucessfully!'}),201
 
 
 #route to get all Employers
@@ -144,4 +143,4 @@ def add_comment():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=9000)
+    app.run(debug=True, port=8000)
