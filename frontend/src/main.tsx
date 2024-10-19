@@ -9,7 +9,6 @@ import Home from "./routes/Home";
 import TrackApplications from "./routes/TrackApplications.tsx";
 import JobBoard from "./routes/JobBoard.tsx";
 import ApplicationManagement from "./routes/ApplicationManagement";
-import CreateJobs from "./routes/CreateJobs.tsx";
 import LearningLibrary from "./routes/LearningLibrary.tsx";
 import { StyledEngineProvider } from "@mui/material";
 import Root from "./routes/Root";
@@ -109,9 +108,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/application-management",
-    element: <ApplicationManagement />
-    path: "/create-a-job",
-    element: <CreateJobs />,
+    element: <ApplicationManagement />,
   },
   {
     path: "/learning-library",
