@@ -39,7 +39,8 @@ const CreateJobs: FC = () => {
     const newJobEntry = {
       ...newJob,
       id: jobs.length + 1,
-      logo: 'https://via.placeholder.com/40x40.png?text=New', // Placeholder logo
+      logo: 'https://via.placeholder.com/40x40.png?text=New',
+      applicationLink: validateUrl(newJob.applicationLink), 
     };
     setJobs([...jobs, newJobEntry]);
     setNewJob({ title: '', company: '', type: 'intern', description: '', hourlyPay: 0, applicationLink: '' }); // Reset form
@@ -49,6 +50,14 @@ const CreateJobs: FC = () => {
   const handleDeleteJob = (id: number) => {
     setJobs(jobs.filter((job) => job.id !== id));
     if (selectedJob?.id === id) setSelectedJob(null);
+  };
+
+  // ensure valid URL (if the user doesn't include 'http' or 'https', we add it)
+  const validateUrl = (url: string) => {
+    if (!/^https?:\/\//i.test(url)) {
+      return `https://${url}`;
+    }
+    return url;
   };
 
   return (
@@ -86,7 +95,7 @@ const CreateJobs: FC = () => {
       {/* Add Job Button */}
       <button
         onClick={() => setIsCreating(true)}
-        className="bg-[#475299] text-white px-4 py-2 rounded-full hover:bg-[#38417a] mb-4"
+        className="bg-[#475299] text-white px-4 py-2 rounded-full hover:bg-[#38417a] mb-4 h-16 font-bold"
       >
         Add Job
       </button>
