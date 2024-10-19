@@ -18,7 +18,7 @@ import PointSkate from "../assets/business-logos/PointSkate.png";
 import SpinsterRecords from "../assets/business-logos/SpinsterRecords.png";
 import WhiteRockCoffee from "../assets/business-logos/WhiteRockCoffee.png";
 import WhiteRockSoap from "../assets/business-logos/WhiteRockSoap.png";
-import stockWomanPhoto from "../assets/stockWomanPhoto.jpg"; // for testimonials
+import stockWomanPhoto from "../assets/stockWomanPhoto.jpg";
 import stockOldManPhoto from "../assets/stockOldManPhoto.jpg";
 import stockBoyPhoto from "../assets/stockBoyPhoto.jpg";
 
@@ -61,7 +61,8 @@ const LandingPage = () => {
       setCurrentStep(3);
     }
   };
-  // Educational section content
+
+  // Educational section content helper variable
   const educationContent = [
     "All Ages",
     "Grow Skills, Earn Certificates",
@@ -107,7 +108,7 @@ const LandingPage = () => {
           About Us
         </Typography>
         <Grid container spacing={4} justifyContent="center">
-          {/* First Subtopic - Mission */}
+          {/* Mission */}
           <Grid
             item
             xs={12}
@@ -121,12 +122,13 @@ const LandingPage = () => {
                 Mission
               </Typography>
               <Typography variant="body1">
-                We aim to inspire and empower the next generation.
+                We aim to inspire and empower the individuals who experienced
+                barriers.
               </Typography>
             </div>
           </Grid>
 
-          {/* Second Subtopic - Education */}
+          {/* Education */}
           <Grid
             item
             xs={12}
@@ -145,7 +147,7 @@ const LandingPage = () => {
             </div>
           </Grid>
 
-          {/* Third Subtopic - Careers */}
+          {/* Careers */}
           <Grid
             item
             xs={12}
@@ -166,12 +168,12 @@ const LandingPage = () => {
         </Grid>
       </div>
 
-      <div id="jobsSection" className="py-16 bg-gray-100">
+      <div id="careersSection" className="py-16 bg-gray-100">
         <Typography variant="h4" className="text-center mb-8">
           Job Opportunities
         </Typography>
         <Carousel showThumbs={false} infiniteLoop autoPlay>
-          {/* First Image - Normal Size */}
+          {/* First Image */}
           <div className="flex items-center justify-center">
             <img
               src={DaBomb}
@@ -179,7 +181,7 @@ const LandingPage = () => {
               className="max-w-full max-h-80 object-contain"
             />
           </div>
-          {/* Second Image - Smaller */}
+          {/* Second Image  */}
           <div className="flex items-center justify-center">
             <img
               src={DirtFlowers}
@@ -187,7 +189,7 @@ const LandingPage = () => {
               className="max-w-[70%] max-h-72 object-contain"
             />
           </div>
-          {/* Third Image - Smaller */}
+          {/* Third Image */}
           <div className="flex items-center justify-center">
             <img
               src={HomeDepot}
@@ -195,7 +197,7 @@ const LandingPage = () => {
               className="max-w-[50%] max-h-64 object-contain"
             />
           </div>
-          {/* Fourth Image - Larger */}
+          {/* Fourth Image */}
           <div className="flex items-center justify-center">
             <img
               src={HEB}
@@ -203,7 +205,7 @@ const LandingPage = () => {
               className="max-w-[90%] max-h-80 object-contain"
             />
           </div>
-          {/* Fifth Image - Normal */}
+          {/* Fifth Image */}
           <div className="flex items-center justify-center">
             <img
               src={PointSkate}
@@ -211,7 +213,7 @@ const LandingPage = () => {
               className="max-w-full max-h-80 object-contain"
             />
           </div>
-          {/* Sixth Image - Smaller */}
+          {/* Sixth Image */}
           <div className="flex items-center justify-center">
             <img
               src={SpinsterRecords}
@@ -219,7 +221,7 @@ const LandingPage = () => {
               className="max-w-[60%] max-h-72 object-contain"
             />
           </div>
-          {/* Seventh Image - Larger */}
+          {/* Seventh Image */}
           <div className="flex items-center justify-center">
             <img
               src={WhiteRockCoffee}
@@ -227,7 +229,7 @@ const LandingPage = () => {
               className="max-w-[85%] max-h-80 object-contain"
             />
           </div>
-          {/* Eighth Image - Normal */}
+          {/* Eighth Image */}
           <div className="flex items-center justify-center">
             <img
               src={WhiteRockSoap}
@@ -273,7 +275,7 @@ const LandingPage = () => {
                   <Avatar src={stockWomanPhoto} className="mr-4" />
                   <Typography variant="body1">
                     "This platform has transformed my career path, opening doors
-                    I never imagined."
+                    I never imagined." - Amy, 32
                   </Typography>
                 </div>
               </CardContent>
@@ -285,7 +287,8 @@ const LandingPage = () => {
                 <div className="flex items-center">
                   <Avatar src={stockOldManPhoto} className="mr-4" />
                   <Typography variant="body1">
-                    "The resources available here helped me land my dream job!"
+                    "The resources available here helped me rehabiliate after
+                    serving my country." - John, 58
                   </Typography>
                 </div>
               </CardContent>
@@ -298,7 +301,7 @@ const LandingPage = () => {
                   <Avatar src={stockBoyPhoto} className="mr-4" />
                   <Typography variant="body1">
                     "I couldn't be happier with the support and guidance
-                    provided by this platform."
+                    provided by this platform." - Logan, 16
                   </Typography>
                 </div>
               </CardContent>

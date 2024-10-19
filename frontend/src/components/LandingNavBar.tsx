@@ -6,7 +6,6 @@ import REE from "../assets/REE.png";
 
 const LandingNavbar = () => {
   return (
-    // bug: sticky is not making the NavBar stay absolute
     <AppBar position="sticky" color="transparent" elevation={0}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
@@ -19,16 +18,7 @@ const LandingNavbar = () => {
           <Tab
             label="About"
             component={ScrollLink}
-            to="homeSection"
-            smooth={true}
-            duration={500}
-            spy={true}
-            offset={-70}
-          />
-          <Tab
-            label="Education"
-            component={ScrollLink}
-            to="educationSection"
+            to="aboutSection"
             smooth={true}
             duration={500}
             spy={true}
@@ -38,6 +28,15 @@ const LandingNavbar = () => {
             label="Careers"
             component={ScrollLink}
             to="careersSection"
+            smooth={true}
+            duration={500}
+            spy={true}
+            offset={-70}
+          />
+          <Tab
+            label="Education"
+            component={ScrollLink}
+            to="educationSection"
             smooth={true}
             duration={500}
             spy={true}
@@ -53,10 +52,10 @@ const LandingNavbar = () => {
             variant="outlined"
             sx={{
               color: "#FEC10E", // REE Yellow
-              borderColor: "#FEC10E", // Outline color
+              borderColor: "#FEC10E",
               "&:hover": {
-                borderColor: "#E0A90C", // Darker outline on hover
-                color: "#E0A90C", // Matching text color on hover
+                borderColor: "#E0A90C",
+                color: "#E0A90C",
               },
               marginRight: "1rem",
             }}
@@ -70,7 +69,7 @@ const LandingNavbar = () => {
             variant="contained"
             sx={{
               backgroundColor: "#FEC10E", // REE Yellow
-              color: "#fff", // White, text color
+              color: "#fff",
               "&:hover": {
                 backgroundColor: "#E0A90C", // Darker yellow on hover
               },
