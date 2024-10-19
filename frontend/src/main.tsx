@@ -8,6 +8,7 @@ import StudentProfile from "./routes/StudentProfile";
 import Home from "./routes/Home";
 import TrackApplications from "./routes/TrackApplications.tsx";
 import JobBoard from "./routes/JobBoard.tsx";
+import ApplicationManagement from "./routes/ApplicationManagement";
 import CreateJobs from "./routes/CreateJobs.tsx";
 import LearningLibrary from "./routes/LearningLibrary.tsx";
 import { StyledEngineProvider } from "@mui/material";
@@ -107,6 +108,8 @@ const router = createBrowserRouter([
     element: <EmployerHome />,
   },
   {
+    path: "/application-management",
+    element: <ApplicationManagement />
     path: "/create-a-job",
     element: <CreateJobs />,
   },
