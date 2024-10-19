@@ -1,10 +1,14 @@
-from flask import Flask, jsonify,request 
+from flask import Flask, jsonify,request
 from table import conn
-import sqlite3 
-
-
-
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+import sqlite3
+app.config.from_prefixed_env()
+load_dotenv()
 app= Flask(__name__)
+
+
+app.config["JWT_SECRET_KEY"] = # Change this!
+jwt = JWTManager(app)
 
 
 def get_conn_database():
@@ -12,14 +16,25 @@ def get_conn_database():
     conn.row_factory=sqlite3.Row #fetch data as rows
     return conn
 
-#route to get all users 
+#when logged in you will get jwt token
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    if username not in users or users[username]["password"] != password:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify(access_token=access_token)
+
+#route to get all users
 @app.route('/users',methods=['GET'])
 def get_users():
     conn=get_conn_database()
     users=conn.execute('SELECT * FROM Users').fetchall()
     conn.close()
 
-    #convert data fetch into dictionary and send json reponse 
+    #convert data fetch into dictionary and send json reponse
 
     user_list=[dict(user) for user in users]
     return jsonify(user_list)
@@ -51,7 +66,7 @@ def get_employers():
     Employers=conn.execute('SELECT * FROM Employers').fetchall()
     conn.close()
 
-    #convert data fetch into dictionary and send json reponse 
+    #convert data fetch into dictionary and send json reponse
 
     user_list=[dict(Employers) for user in Employers]
     return jsonify(user_list)
